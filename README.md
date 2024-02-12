@@ -1,0 +1,1 @@
+Exercises part 7 University of Helsinki, React Router, custom hooks, styles, class components.
