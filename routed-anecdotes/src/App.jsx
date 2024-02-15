@@ -1,19 +1,20 @@
 import './App.css'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import {Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import CreateNew from './routes/Create'
+import Anecdotes from './routes/Anecdotes'
 
 function App() {
-  const [anecdotes, setAnecdotes] = useState([])
-  
-  useEffect(()=> {
-    axios.get('http://localhost:3001/anecdotes')
-      .then(response => setAnecdotes(response.data))
-  },[])
 
-  console.log(anecdotes)
   return (
     <div>
-      <h1>Welcome to the exercise</h1>
+      <Header/>
+      <Routes>
+        <Route path='/' element={<Anecdotes/>}/>
+        <Route path='create' element={ <CreateNew/> }/>
+      </Routes>
+      <Footer/>
     </div>
   )
 }

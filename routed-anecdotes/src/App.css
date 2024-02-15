@@ -1,7 +1,84 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
+
+.containerHeader{
+  margin: 0;
+  width: 100vw;
+  background-color: #2f9c8a;
+}
+
+.links{
+  color:  rgba(255, 255, 255, 0.87);
+}
+
+.links:hover{
+  color: #CBDDB5;
+}
+
+.containerList{
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  padding: 0;
+  align-items: center;
+}
+
+.ulAnecdotes{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  width: 60%;
+}
+
+#colorList{
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.87);
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+#colorList:hover{
+  color: #a6c74c;
+}
+
+.containerFooter{
+  background-color: #2f9c8a;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.externalLinks{
+  color: #a6c74c;
+}
+
+#addAnecdoteForm{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin-top: 2rem;
+  gap: 2rem;
+}
+
+#btnForm{
+  color: rgba(255, 255, 255, 0.87);;
+}
+#title:focus{
+  border: #a6c74c 4px solid; 
+}
+#author:focus{
+  border: #a6c74c 4px solid;
+}
+#url:focus{
+  border: #a6c74c 4px solid;
+}
