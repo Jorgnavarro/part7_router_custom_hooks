@@ -3,11 +3,22 @@
   text-align: center;
 }
 
+.containerApp{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
 
 .containerHeader{
   margin: 0;
   width: 100vw;
   background-color: #2f9c8a;
+  
 }
 
 .links{
@@ -24,6 +35,7 @@
   margin-top: 2rem;
   padding: 0;
   align-items: center;
+  height: 100%;
 }
 
 .ulAnecdotes{
@@ -48,26 +60,16 @@
   color: #a6c74c;
 }
 
-.containerFooter{
-  background-color: #2f9c8a;
-  height: 10vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.externalLinks{
-  color: #a6c74c;
-}
 
 #addAnecdoteForm{
-  height: 100vh;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: start;
   margin-top: 2rem;
   gap: 2rem;
+  width: 70%;
+  
 }
 
 #btnForm{
@@ -81,4 +83,27 @@
 }
 #url:focus{
   border: #a6c74c 4px solid;
+}
+
+.containerDetail{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+  height: 100%;
+}
+
+.containerFooter{
+  background-color: #2f9c8a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  width: 100vw;
+}
+
+.externalLinks{
+  color: #a6c74c;
 }

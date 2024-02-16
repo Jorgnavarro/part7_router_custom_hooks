@@ -1,23 +1,24 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-const Anecdotes = () => {
-    const [anecdotes, setAnecdotes] = useState([])
+/* eslint-disable react/prop-types */
+
+import { Link } from 'react-router-dom'
+const Anecdotes = ({ list }) => {
   
-    useEffect(()=> {
-      axios.get('http://localhost:3001/anecdotes')
-        .then(response => setAnecdotes(response.data))
-    },[])
+    
     return ( 
         <div className='containerList'>
         <h4>Anecdotes</h4>
         <ul className='list-group ulAnecdotes'>
-          { anecdotes.map(anecdote => {
-            return <li key={anecdote.id} className='list-group-item list-group-item-primary' id='colorList'>{anecdote.title}</li>
+          { list.map(anecdote => {
+            return <li key={anecdote.id} className='list-group-item list-group-item-primary' id='colorList'>
+                <Link className='links' to={`/anecdotes/${anecdote.id}`}>
+                    {anecdote.title}
+                </Link>
+            </li>
             })
           }
         </ul>
       </div>
-     )
+    )
 }
 
 export default Anecdotes
