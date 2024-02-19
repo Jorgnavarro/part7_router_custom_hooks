@@ -1,29 +1,32 @@
-import { ContextGlobal } from "../context/Context";
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { ContextGlobal } from "../context/Context"
+import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import { validatorAnecdote } from "../utils/validations"
 import anecdoteService from '../services/anecdote'
+import { useField } from "../hooks/index"
 import Swal from 'sweetalert2'
 const CreateNew = () => {
 const [ anecdotes, setAnecdotes ] = useContext(ContextGlobal)
 const navigate = useNavigate();
+/*Inputs*/
+const title = useField('text')
+const author = useField('text')
+const url = useField('text')
+
 
 const addAnecdote = (e) => {
   e.preventDefault()
-  const title = e.target.title.value
-  const author = e.target.author.value
-  const url = e.target.url.value
-
+  
   const objectToEvaluated = {
-    title,
-    author,
-    url,
+    title: title.value,
+    author: author.value,
+    url: url.value,
     votes: 0
   }
 
   if(validatorAnecdote(objectToEvaluated)){
     Swal.fire({
-      text: `The anecdote: ${title} was added ✅`,
+      text: `The anecdote: ${title.value} was added ✅`,
       icon: "success"
     })
 
@@ -40,12 +43,9 @@ const addAnecdote = (e) => {
       text: "One of the fields is less than 5 characters, please try again."
     })
   }
-
   e.target.title.value = ''
   e.target.url.value = ''
   e.target.author.value = ''
-
-  
 }
 
     return(
@@ -57,10 +57,10 @@ const addAnecdote = (e) => {
             </div>
             <div className="col-7">
               <input
-                type="text"
                 className="form-control"
                 id="title"
                 name="title"
+                {...title}
               />
             </div>
           </div>
@@ -70,10 +70,10 @@ const addAnecdote = (e) => {
             </div>
             <div className="col-5">
               <input
-                type='text'
                 className="form-control"
                 id="author"
                 name="author"
+                {...author}
               />
             </div>
           </div>
@@ -83,10 +83,10 @@ const addAnecdote = (e) => {
             </div>
             <div className="col-7">
               <input
-                type='text'
                 className="form-control"
                 id="url"
                 name="url"
+                {...url}
               />
             </div>
           </div>

@@ -47,13 +47,27 @@
       "title": "You should be proud, look at everything you are doing.",
       "author": "Luis Navarro",
       "url": "www.beliveinyourself.com",
-      "votes" : 0
+      "votes": 0
     },
     {
       "id": "8800",
       "title": "A new day, a new opportunity",
       "author": "Isabelle Bhome",
       "url": "testing.eslint.com",
+      "votes": 0
+    },
+    {
+      "id": "e5bd",
+      "title": "Es preferible padecer la injusticia que causarla",
+      "author": "Classroom of the elite",
+      "url": "example@example.com",
+      "votes": 0
+    },
+    {
+      "id": "b305",
+      "title": "The life is a privilege or a condenation?",
+      "author": "Luis Navarro",
+      "url": "example@example.com",
       "votes": 0
     }
   ]
