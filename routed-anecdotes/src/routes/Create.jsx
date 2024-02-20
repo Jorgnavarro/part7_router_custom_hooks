@@ -7,7 +7,7 @@ import { useField } from "../hooks/index"
 import Swal from 'sweetalert2'
 const CreateNew = () => {
 const [ anecdotes, setAnecdotes ] = useContext(ContextGlobal)
-const navigate = useNavigate();
+const navigate = useNavigate()
 /*Inputs*/
 const title = useField('text')
 const author = useField('text')
@@ -18,9 +18,9 @@ const addAnecdote = (e) => {
   e.preventDefault()
   
   const objectToEvaluated = {
-    title: title.value,
-    author: author.value,
-    url: url.value,
+    title: title.atributes.value,
+    author: author.atributes.value,
+    url: url.atributes.value,
     votes: 0
   }
 
@@ -48,6 +48,14 @@ const addAnecdote = (e) => {
   e.target.author.value = ''
 }
 
+const resetFields = () => {
+  title.resetValue()
+  author.resetValue()
+  url.resetValue()
+  
+}
+
+
     return(
         <form onSubmit={addAnecdote} id='addAnecdoteForm' className="mb-3">
             <h2>New anecdote ✍🏽</h2>
@@ -60,7 +68,7 @@ const addAnecdote = (e) => {
                 className="form-control"
                 id="title"
                 name="title"
-                {...title}
+                {...title.atributes}
               />
             </div>
           </div>
@@ -73,7 +81,7 @@ const addAnecdote = (e) => {
                 className="form-control"
                 id="author"
                 name="author"
-                {...author}
+                {...author.atributes}
               />
             </div>
           </div>
@@ -86,12 +94,14 @@ const addAnecdote = (e) => {
                 className="form-control"
                 id="url"
                 name="url"
-                {...url}
+                {...url.atributes}
               />
             </div>
           </div>
-          <div className="align-self-center">
+          <div className="align-self-center containerBtnsForm gap-2">
             <button className="btn btn-outline-success" type='submit' id='btnForm'>Create</button>
+            <button className="btn btn-outline-warning" type='button' 
+            onClick={resetFields}>Reset form</button>
           </div>
         </form>
     )

@@ -69,6 +69,13 @@
       "author": "Luis Navarro",
       "url": "example@example.com",
       "votes": 0
+    },
+    {
+      "id": "8c5d",
+      "title": "It is better to suffer an injustice than to commit it",
+      "author": "Luis Navarro",
+      "url": "www.marketweed.com",
+      "votes": 0
     }
   ]
 }

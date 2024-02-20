@@ -2,14 +2,22 @@ import { useState } from "react"
 
 export const useField = (type) => {
     const [value, setValue] = useState('')
-
     const onChange = (e) => {
         setValue(e.target.value)
     }
 
-    return {
+    const resetValue = () => {
+        setValue('')
+    }
+
+    const atributes = {
         type,
-        value, 
+        value,
         onChange
+    }
+
+    return {
+        atributes,
+        resetValue
     }
 }

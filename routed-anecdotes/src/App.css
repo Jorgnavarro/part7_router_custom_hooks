@@ -71,6 +71,9 @@
   width: 70%;
   
 }
+.containerBtnsForm{
+  display: flex;
+}
 
 #btnForm{
   color: rgba(255, 255, 255, 0.87);;
