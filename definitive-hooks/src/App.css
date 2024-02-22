@@ -1,7 +1,25 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 100%;
+}
+
+.containerForms{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.containerNotes{
+  margin: 1rem;
+}
+
+.containerPersons{
+  margin: 1rem;
+}
+
+.divisionLine{
+  border: 2px solid;
 }
 

@@ -4,7 +4,12 @@ import { useField } from './hooks/useField'
 
 function App() {
   const [content, resetInput] = useField('text')
+  const [name, resetNameInput] = useField('text')
+  const [number, resetNumberInput] = useField('text')
   const [notes, noteService] = useResource('http://localhost:3005/notes')
+  const [persons, personsService] = useResource('http://localhost:3005/persons')
+
+
 
   const handleNoteSubmit = (e) => {
     e.preventDefault()
@@ -12,13 +17,24 @@ function App() {
     resetInput("")
   }
 
+  const handlePersonsSubmit = (e) => {
+    e.preventDefault()
+    personsService({
+      name: name.value,
+      number: number.value
+    })
+    resetNameInput("")
+    resetNumberInput("")
+  }
+
   return (
-    <div>
+    <div className='containerForms'>
       <h2>Notes ✍🏽</h2>
-      <form onSubmit={handleNoteSubmit}>
-      <div className='row align-items-center'>
-        <div className="col-9">
-          <input 
+      <form id='formNotes' onSubmit={handleNoteSubmit}>
+      <div className='row align-items-center justify-content-center'>
+        <div className="col-4">
+          <input
+            id="content"
             name="content"
             type="text"
             className="form-control"
@@ -27,23 +43,26 @@ function App() {
           />
         </div>
         <div className="col-auto">
-          <button type="submit">Save</button>
+          <button type="submit">Create</button>
         </div>
       </div>
     </form>
-    {notes.map(n => {
-      return <p key={n.id}>{n.content}</p>
-    })}
+     <div className='containerNotes'>
+     {notes.map(n => {
+      return <h4 key={n.id}>{n.content}</h4>
+     })}
+     </div>
+     <hr className='divisionLine' />
       <h2>Persons 📒</h2>
-      <form >
+      <form id="formPersons" onSubmit={handlePersonsSubmit} >
             {/*Input and label name*/}
-            <div className='row g-3 align-items-center'>
+            <div className='row g-3 align-items-center justify-content-center'>
                 <div className='col-auto'>
                     <label htmlFor="inputName" className="col-form-label">Name:</label>
                 </div>
                 <div className="col-5">
                     <input
-                        
+                        {...name}
                         id='inputName'
                         name='name'
                         type="text"
@@ -52,25 +71,31 @@ function App() {
                 </div>
             </div>
             {/*Input and label number*/}
-            <div className='row g-3 align-items-center'>
+            <div className='row g-3 align-items-center justify-content-center'>
                 <div className='col-auto'>
                     <label htmlFor="inputNumber" className="col-form-label">Number:</label>
                 </div>
                 <div className="col-5">
                     <input
+                        {...number}
                         id='inputNumber'
                         name='number'
                         type="text"
                         className="form-control m-2" placeholder="Introduce your number..." />
                 </div>
             </div>
-            <div className='col-6'>
+            <div className='justify-content-center'>
                 <button type="submit"
                     className="btn btn-primary px-5">
-                    Add
+                    Create
                 </button>
             </div>
         </form>
+        <div className='containerPersons'>
+          {persons.map(p => {
+            return <h4 key={p.id}>{p.name} - {p.number}</h4>
+          })}
+        </div>
     </div>
   )
 }
