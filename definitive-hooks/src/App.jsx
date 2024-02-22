@@ -1,17 +1,29 @@
 import './App.css'
+import { useResource } from './hooks/useResource'
+import { useField } from './hooks/useField'
 
 function App() {
-  
+  const [content, resetInput] = useField('text')
+  const [notes, noteService] = useResource('http://localhost:3005/notes')
+
+  const handleNoteSubmit = (e) => {
+    e.preventDefault()
+    noteService({ content: content.value})
+    resetInput("")
+  }
 
   return (
     <div>
       <h2>Notes ✍🏽</h2>
-      <form>
+      <form onSubmit={handleNoteSubmit}>
       <div className='row align-items-center'>
         <div className="col-9">
-          <input type="text"
+          <input 
+            name="content"
+            type="text"
             className="form-control"
             placeholder="Write a new note here..."
+            {...content}
           />
         </div>
         <div className="col-auto">
@@ -19,6 +31,9 @@ function App() {
         </div>
       </div>
     </form>
+    {notes.map(n => {
+      return <p key={n.id}>{n.content}</p>
+    })}
       <h2>Persons 📒</h2>
       <form >
             {/*Input and label name*/}
