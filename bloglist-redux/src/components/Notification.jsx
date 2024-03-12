@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types'
+
 import { useSelector } from 'react-redux'
 
 
@@ -15,7 +15,12 @@ const Notification = () => {
     return null
   }
 
-  const styleNotification = message.includes('Wrong')
+  let messageRegex = /Wrong|expired|invalid/
+
+  let resultNotification = messageRegex.test(message)
+
+
+  const styleNotification = resultNotification
     ? 'alert-danger'
     : 'alert-success'
 
@@ -28,8 +33,5 @@ const Notification = () => {
   )
 }
 
-// Notification.propTypes = {
-//   className: PropTypes.string.isRequired
-// }
 
 export default Notification

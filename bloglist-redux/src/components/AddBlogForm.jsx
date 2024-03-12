@@ -2,14 +2,17 @@ import { useState, useContext, useRef } from 'react'
 import blogService from '../services/blog'
 import { ContextGlobal } from '../context/globalContext'
 import Togglable from './Togglable'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
 
 export function AddBlogForm () {
-  const { setBlogs, blogs, setErrorMessage, setInfoMessage } = useContext(ContextGlobal)
+  const { setBlogs, blogs } = useContext(ContextGlobal)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const blogFormRef = useRef()
+  const dispatch = useDispatch()
 
 
   const addBlog = (e) => {
@@ -28,17 +31,13 @@ export function AddBlogForm () {
           setAuthor('')
           setUrl('')
         })
-      setInfoMessage(`${title}, added ✅`)
-      setTimeout(() => {
-        setInfoMessage(null)
-      }, 5000)
+        .catch(response => {
+          console.log(response.response.data.error)
+          dispatch(setNotification(`Please login again - ${response.response.data.error}`, 3))
+        })
+      dispatch(setNotification(`The blog ${title} was added ✅`, 2))
     }else{
-      setErrorMessage(
-        'Some of the fields are invalid'
-      )
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('Some of the fields are invalid', 2))
     }
   }
 

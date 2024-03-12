@@ -7,16 +7,12 @@ import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
-import { useDispatch } from 'react-redux'
-import { setNotification } from './reducers/notificationReducer'
+
 
 function App() {
 
   const [userDDBB, setUserDDBB] = useState({})
-
-  const dispatch = useDispatch()
-
-  const { blogs, setBlogs, errorMessage, infoMessage, setUser, user, modifierLikes } = useContext(ContextGlobal)
+  const { blogs, setBlogs, setUser, user, modifierLikes } = useContext(ContextGlobal)
 
 
   useEffect(() => {
