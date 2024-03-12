@@ -2,10 +2,13 @@ import { useContext } from 'react'
 import { ContextGlobal } from '../context/globalContext'
 import loginService from '../services/login'
 import blogService from '../services/blog'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
 
 export function LoginForm () {
-  const { setErrorMessage, setInfoMessage, username, setUsername, setUser, password, setPassword } = useContext(ContextGlobal)
+  const { username, setUsername, setUser, password, setPassword } = useContext(ContextGlobal)
+  const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -21,16 +24,10 @@ export function LoginForm () {
       setUsername('')
       setPassword('')
 
-      setInfoMessage(`Welcome ${username}`)
-      setTimeout(() => {
-        setInfoMessage(null)
-      }, 5000)
+      dispatch(setNotification(`Welcome ${username}`, 2))
 
     }catch(exception){
-      setErrorMessage('Wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      dispatch(setNotification('Wrong username or password', 2))
     }
   }
 

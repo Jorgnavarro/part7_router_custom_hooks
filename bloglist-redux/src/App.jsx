@@ -7,13 +7,17 @@ import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
-
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 function App() {
 
   const [userDDBB, setUserDDBB] = useState({})
 
+  const dispatch = useDispatch()
+
   const { blogs, setBlogs, errorMessage, infoMessage, setUser, user, modifierLikes } = useContext(ContextGlobal)
+
 
   useEffect(() => {
     blogService.getAll()
@@ -95,9 +99,8 @@ function App() {
   return (
     <div className='container containerBlogs'>
       <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
-      <Notification className="alert-danger" message={errorMessage}/>
+      <Notification/>
       {user === null ? <LoginForm/> : <HeaderUserInfo/> }
-      <Notification className="alert-success" message={infoMessage}/>
       {user && <AddBlogForm/>}
       {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {user && <ul className='list-group' id='initialList'>
