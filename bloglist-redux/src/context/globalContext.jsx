@@ -7,10 +7,6 @@ export const ContextGlobal = createContext()
 export const ContextProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([])
 
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  const [infoMessage, setInfoMessage] = useState(null)
-
   const [username, setUsername] = useState('')
 
   const [password, setPassword] = useState('')
@@ -22,10 +18,6 @@ export const ContextProvider = ({ children }) => {
   const values = {
     blogs,
     setBlogs,
-    errorMessage,
-    setErrorMessage,
-    infoMessage,
-    setInfoMessage,
     username,
     setUsername,
     password,

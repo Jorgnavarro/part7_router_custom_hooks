@@ -7,12 +7,25 @@ import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
+import { useDispatch, useSelector } from 'react-redux'
+import { initializeBlogs } from './reducers/blogReducer'
 
 
 function App() {
-
   const [userDDBB, setUserDDBB] = useState({})
   const { blogs, setBlogs, setUser, user, modifierLikes } = useContext(ContextGlobal)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
+
+  const blogList = useSelector(state => {
+    return state.blogs
+  })
+
+  console.log(blogList)
+
 
 
   useEffect(() => {
@@ -100,7 +113,7 @@ function App() {
       {user && <AddBlogForm/>}
       {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {user && <ul className='list-group' id='initialList'>
-        {blogs.map(blog => {
+        {blogList.map(blog => {
           return <Blog key={blog.id} blog={blog} userDDBB={userDDBB} updatedBlog={updateLikesBlog} deleteABlog={deleteABlog}/>
         })}
       </ul>}
