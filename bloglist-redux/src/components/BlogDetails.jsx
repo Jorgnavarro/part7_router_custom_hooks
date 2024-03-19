@@ -1,8 +1,14 @@
 import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { voteABlogService } from '../reducers/blogReducer'
 
+const BlogDetail = ({ blog, style, userDDBB, deleteABlog }) => {
+  const dispatch = useDispatch()
 
-const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
+  const handleLikes = (id) => {
+    dispatch(voteABlogService(id))
+  }
 
   const handleDeleteBlog = () => {
     Swal.fire({
@@ -12,7 +18,7 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         deleteABlog(blog.id)
@@ -20,7 +26,7 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
           icon: 'success',
           title: 'Your blog has been deleted',
           showConfirmButton: false,
-          timer: 3000
+          timer: 3000,
         })
       }
     })
@@ -28,17 +34,30 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
 
   return (
     <ul className="listDetails" style={style}>
-      <li className='urlTest'>
-        {blog.url}
+      <li className="urlTest">{blog.url}</li>
+      <li className="likesTest">
+        likes: {blog.likes}{' '}
+        <button
+          onClick={() => handleLikes(blog.id)}
+          className="btn btn-outline-primary likeTest"
+          id="btn-likes"
+        >
+          like
+        </button>
       </li>
-      <li className='likesTest'>
-                likes: {blog.likes} <button onClick={() => handleLikes()} className="btn btn-outline-primary likeTest" id="btn-likes">like</button>
-      </li>
-      <li>
-        {blog.author}
-      </li>
-      <li id='container-btnDelete'>
-        {blog.user?.id === userDDBB ? <button id='btn-delete' className="btn btn-outline-danger" onClick={() => handleDeleteBlog()}>Remove</button> : ''}
+      <li>{blog.author}</li>
+      <li id="container-btnDelete">
+        {blog.user?.id === userDDBB ? (
+          <button
+            id="btn-delete"
+            className="btn btn-outline-danger"
+            onClick={() => handleDeleteBlog()}
+          >
+            Remove
+          </button>
+        ) : (
+          ''
+        )}
       </li>
     </ul>
   )
@@ -47,9 +66,8 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
 BlogDetail.propTypes = {
   blog: PropTypes.object.isRequired,
   style: PropTypes.object.isRequired,
-  handleLikes: PropTypes.func.isRequired,
   userDDBB: PropTypes.string.isRequired,
-  deleteABlog: PropTypes.func.isRequired
+  deleteABlog: PropTypes.func.isRequired,
 }
 
 export default BlogDetail

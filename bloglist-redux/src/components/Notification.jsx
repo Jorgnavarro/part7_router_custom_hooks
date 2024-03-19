@@ -15,7 +15,7 @@ const Notification = () => {
     return null
   }
 
-  let messageRegex = /Wrong|expired|invalid/
+  let messageRegex = /Wrong|expired|invalid|401/
 
   let resultNotification = messageRegex.test(message)
 

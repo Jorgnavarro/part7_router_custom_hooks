@@ -28,14 +28,14 @@ function App() {
 
 
 
-  useEffect(() => {
-    blogService.getAll()
-      .then(initialBlogList => {
-        setBlogs(initialBlogList)
-      })
-  }, [setBlogs, modifierLikes])
+  // useEffect(() => {
+  //   blogService.getAll()
+  //     .then(initialBlogList => {
+  //       setBlogs(initialBlogList)
+  //     })
+  // }, [setBlogs, modifierLikes])
 
-  console.log(blogs)
+  // console.log(blogs)
 
 
 
@@ -76,19 +76,19 @@ function App() {
 
   },[user])
 
-  const updateLikesBlog = async (id, newObject) => {
-    try{
-      const response = await blogService.update(id, newObject)
+  // const updateLikesBlog = async (id, newObject) => {
+  //   try{
+  //     const response = await blogService.update(id, newObject)
 
-      setBlogs(
-        blogs.map( blog => {
-          return blog.id !== response.id ? blog : response
-        })
-      )
-    }catch(error){
-      console.log('You need to provide a jwt or login again')
-    }
-  }
+  //     setBlogs(
+  //       blogs.map( blog => {
+  //         return blog.id !== response.id ? blog : response
+  //       })
+  //     )
+  //   }catch(error){
+  //     console.log('You need to provide a jwt or login again')
+  //   }
+  // }
 
   const deleteABlog = async (id) => {
 
@@ -114,7 +114,7 @@ function App() {
       {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {user && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB} updatedBlog={updateLikesBlog} deleteABlog={deleteABlog}/>
+          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB} deleteABlog={deleteABlog}/>
         })}
       </ul>}
     </div>
