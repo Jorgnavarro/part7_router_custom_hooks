@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2'
-import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 
@@ -8,6 +7,16 @@ const BlogDetail = ({ blog, style, userDDBB }) => {
 
   //nos apoyamos en las notificaciones en el caso de que el token haya expirado, desde el useSelector obtenemos el mensaje y lo usamos como condicional dentro de sweetAlert para setear una alerta que indique que el usuario debe iniciar sesión.
   const dataNotification = useSelector(state =>  state.notification)
+
+  const blogs = useSelector(state =>  state.blogs)
+
+  console.log(dataNotification?.includes('401'))
+
+  const badRequest = dataNotification?.includes('401')
+
+  console.log(badRequest)
+
+  console.log(userDDBB)
 
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
@@ -24,21 +33,27 @@ const BlogDetail = ({ blog, style, userDDBB }) => {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
-      if (result.isConfirmed && !dataNotification) {
+      if (result.isConfirmed) {
         dispatch(deleteABlogService(blog.id))
-        Swal.fire({
-          icon: 'success',
-          title: 'Your blog has been deleted',
-          showConfirmButton: false,
-          timer: 3000,
-        })
-      }else if(dataNotification){
-        Swal.fire({
-          icon: 'error',
-          title: 'The blog cannot be deleted, please log in again',
-          showConfirmButton: false,
-          timer: 1000,
-        })
+
+        const deletedBlog = blogs.find(b => b.id === blog.id)
+
+        if(deletedBlog){
+          Swal.fire({
+            icon: 'error',
+            title: 'The blog cannot be deleted, please log in again',
+            showConfirmButton: false,
+            timer: 1000,
+          })
+
+        }else{
+          Swal.fire({
+            icon: 'success',
+            title: 'Your blog has been deleted',
+            showConfirmButton: false,
+            timer: 2000,
+          })
+        }
       }
     })
   }
@@ -74,10 +89,6 @@ const BlogDetail = ({ blog, style, userDDBB }) => {
   )
 }
 
-BlogDetail.propTypes = {
-  blog: PropTypes.object.isRequired,
-  style: PropTypes.object.isRequired,
-  userDDBB: PropTypes.string.isRequired
-}
+
 
 export default BlogDetail

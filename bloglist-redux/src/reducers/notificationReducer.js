@@ -24,4 +24,5 @@ export const setNotification = (message, time) => {
   }
 }
 
+
 export default notificationSlice.reducer

@@ -72,7 +72,7 @@ export const deleteABlogService = (id) => {
       dispatch(setBlogs(updatedList))
 
     } catch(e){
-      dispatch(setNotification(`Please login again - ${e.message}`, 4))
+      dispatch(setNotification(`Please login again - ${e.message}`))
     }
   }
 }
