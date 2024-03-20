@@ -13,7 +13,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 
 function App() {
   const [userDDBB, setUserDDBB] = useState({})
-  const { blogs, setBlogs, setUser, user, modifierLikes } = useContext(ContextGlobal)
+  const { blogs, setBlogs, setUser, user } = useContext(ContextGlobal)
 
   const dispatch = useDispatch()
   useEffect(() => {
@@ -76,34 +76,7 @@ function App() {
 
   },[user])
 
-  // const updateLikesBlog = async (id, newObject) => {
-  //   try{
-  //     const response = await blogService.update(id, newObject)
 
-  //     setBlogs(
-  //       blogs.map( blog => {
-  //         return blog.id !== response.id ? blog : response
-  //       })
-  //     )
-  //   }catch(error){
-  //     console.log('You need to provide a jwt or login again')
-  //   }
-  // }
-
-  const deleteABlog = async (id) => {
-
-    try{
-      const response = await blogService.deleteBlog(id)
-      console.log(response)
-      setBlogs(
-        blogs.filter(blog => {
-          return blog.id !== id
-        })
-      )
-    }catch(error){
-      console.log(error)
-    }
-  }
 
   return (
     <div className='container containerBlogs'>
@@ -114,7 +87,7 @@ function App() {
       {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {user && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB} deleteABlog={deleteABlog}/>
+          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB}/>
         })}
       </ul>}
     </div>

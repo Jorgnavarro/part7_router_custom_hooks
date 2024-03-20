@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 
 
-const Blog = ({ blog, userDDBB, deleteABlog }) => {
+const Blog = ({ blog, userDDBB }) => {
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
 
@@ -20,15 +20,14 @@ const Blog = ({ blog, userDDBB, deleteABlog }) => {
         {blog.title} - {blog.author}
         <button id="btn-details" className="btn btn-outline-primary" onClick={toggleVisibility}>{visible ? 'Hide details':'View details'}</button>
       </div>
-      <BlogDetail key={blog.id} userDDBB={userDDBB} style={showWhenVisible} blog={blog} deleteABlog={deleteABlog}/>
+      <BlogDetail key={blog.id} userDDBB={userDDBB} style={showWhenVisible} blog={blog} />
     </li>
   )
 }
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  userDDBB: PropTypes.string.isRequired,
-  deleteABlog: PropTypes.func.isRequired
+  userDDBB: PropTypes.string.isRequired
 }
 
 

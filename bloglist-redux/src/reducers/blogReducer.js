@@ -24,6 +24,17 @@ export const initializeBlogs = () => {
   }
 }
 
+export const createBlog = (blog) => {
+  return async dispatch => {
+    const newObject = {
+      ...blog,
+      likes: 0
+    }
+    const newBlog = await blogService.create(newObject)
+    dispatch(appendBlog(newBlog))
+  }
+}
+
 export const voteABlogService = ( id ) => {
   return async (dispatch, getState) => {
     try{
@@ -46,6 +57,23 @@ export const voteABlogService = ( id ) => {
       dispatch(setNotification(`Please login again - ${e.message}`, 4))
     }
 
+  }
+}
+
+export const deleteABlogService = (id) => {
+  return async(dispatch, getState) => {
+    try {
+      const blogs = getState().blogs
+
+      await blogService.deleteBlog(id)
+
+      const updatedList = blogs.filter(blog => blog.id !== id)
+
+      dispatch(setBlogs(updatedList))
+
+    } catch(e){
+      dispatch(setNotification(`Please login again - ${e.message}`, 4))
+    }
   }
 }
 

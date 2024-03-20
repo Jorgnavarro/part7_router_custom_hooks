@@ -1,14 +1,18 @@
 import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
-import { voteABlogService } from '../reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 
-const BlogDetail = ({ blog, style, userDDBB, deleteABlog }) => {
+const BlogDetail = ({ blog, style, userDDBB }) => {
   const dispatch = useDispatch()
+
+  //nos apoyamos en las notificaciones en el caso de que el token haya expirado, desde el useSelector obtenemos el mensaje y lo usamos como condicional dentro de sweetAlert para setear una alerta que indique que el usuario debe iniciar sesión.
+  const dataNotification = useSelector(state =>  state.notification)
 
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
   }
+
 
   const handleDeleteBlog = () => {
     Swal.fire({
@@ -20,13 +24,20 @@ const BlogDetail = ({ blog, style, userDDBB, deleteABlog }) => {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
-      if (result.isConfirmed) {
-        deleteABlog(blog.id)
+      if (result.isConfirmed && !dataNotification) {
+        dispatch(deleteABlogService(blog.id))
         Swal.fire({
           icon: 'success',
           title: 'Your blog has been deleted',
           showConfirmButton: false,
           timer: 3000,
+        })
+      }else if(dataNotification){
+        Swal.fire({
+          icon: 'error',
+          title: 'The blog cannot be deleted, please log in again',
+          showConfirmButton: false,
+          timer: 1000,
         })
       }
     })
@@ -66,8 +77,7 @@ const BlogDetail = ({ blog, style, userDDBB, deleteABlog }) => {
 BlogDetail.propTypes = {
   blog: PropTypes.object.isRequired,
   style: PropTypes.object.isRequired,
-  userDDBB: PropTypes.string.isRequired,
-  deleteABlog: PropTypes.func.isRequired,
+  userDDBB: PropTypes.string.isRequired
 }
 
 export default BlogDetail
