@@ -1,34 +1,18 @@
 import { useContext } from 'react'
 import { ContextGlobal } from '../context/globalContext'
-import loginService from '../services/login'
-import blogService from '../services/blog'
 import { useDispatch } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { setUserService } from '../reducers/loginReducer'
 
 
 export function LoginForm () {
-  const { username, setUsername, setUser, password, setPassword } = useContext(ContextGlobal)
+  const { username, setUsername, password, setPassword } = useContext(ContextGlobal)
   const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    try{
-      const user = await loginService.login({
-        username, password
-      })
-      window.localStorage.setItem(
-        'loggedUserBlogs', JSON.stringify(user)
-      )
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-
-      dispatch(setNotification(`Welcome ${username}`, 2))
-
-    }catch(exception){
-      dispatch(setNotification('Wrong username or password', 2))
-    }
+    dispatch(setUserService(username, password))
+    setUsername('')
+    setPassword('')
   }
 
   return (

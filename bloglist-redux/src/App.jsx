@@ -9,34 +9,27 @@ import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
+import { getLoggedUser } from './reducers/userReducer'
+
 
 
 function App() {
   const [userDDBB, setUserDDBB] = useState({})
-  const { blogs, setBlogs, setUser, user } = useContext(ContextGlobal)
+  const { blogs, setBlogs } = useContext(ContextGlobal)
+  const user = useSelector(state => state.userLogin)
+  const userId = useSelector(state => state.userData)
+  console.log(userId)
 
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(getLoggedUser())
   }, [dispatch])
 
   const blogList = useSelector(state => {
     return state.blogs
   })
-
-  console.log(blogList)
-
-
-
-  // useEffect(() => {
-  //   blogService.getAll()
-  //     .then(initialBlogList => {
-  //       setBlogs(initialBlogList)
-  //     })
-  // }, [setBlogs, modifierLikes])
-
-  // console.log(blogs)
-
 
 
   const sortByLikes = () => {
@@ -48,33 +41,6 @@ function App() {
   }
 
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
-    if(loggedUserJSON){
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  },[setUser])
-
-  useEffect( () => {
-    async function getLocalUser (){
-      try{
-        const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
-        const userToSearch = JSON.parse(loggedUserJSON)
-        if(userToSearch !== null){
-          const response = await userService.getUser(userToSearch.username)
-          setUserDDBB(response[0].id)
-        }else{
-          throw('User it is not ready')
-        }
-      }catch(e){
-        console.log(e)
-      }
-    }
-    getLocalUser()
-
-  },[user])
 
 
 
@@ -82,12 +48,12 @@ function App() {
     <div className='container containerBlogs'>
       <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
       <Notification/>
-      {user === null ? <LoginForm/> : <HeaderUserInfo/> }
-      {user && <AddBlogForm/>}
-      {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
-      {user && <ul className='list-group' id='initialList'>
+      {userId === null ? <LoginForm/> : <HeaderUserInfo/> }
+      {userId && <AddBlogForm/>}
+      {userId && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
+      {userId && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB}/>
+          return <Blog key={blog.id} blog={blog} userId={userId}/>
         })}
       </ul>}
     </div>

@@ -2,21 +2,10 @@ import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 
-const BlogDetail = ({ blog, style, userDDBB }) => {
+const BlogDetail = ({ blog, style, userId }) => {
   const dispatch = useDispatch()
 
-  //nos apoyamos en las notificaciones en el caso de que el token haya expirado, desde el useSelector obtenemos el mensaje y lo usamos como condicional dentro de sweetAlert para setear una alerta que indique que el usuario debe iniciar sesión.
-  const dataNotification = useSelector(state =>  state.notification)
-
   const blogs = useSelector(state =>  state.blogs)
-
-  console.log(dataNotification?.includes('401'))
-
-  const badRequest = dataNotification?.includes('401')
-
-  console.log(badRequest)
-
-  console.log(userDDBB)
 
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
@@ -73,7 +62,7 @@ const BlogDetail = ({ blog, style, userDDBB }) => {
       </li>
       <li>{blog.author}</li>
       <li id="container-btnDelete">
-        {blog.user?.id === userDDBB ? (
+        {blog.user?.id === userId ? (
           <button
             id="btn-delete"
             className="btn btn-outline-danger"
