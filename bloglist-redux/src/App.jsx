@@ -14,11 +14,17 @@ import { getLoggedUser } from './reducers/userReducer'
 
 
 function App() {
-  const [userDDBB, setUserDDBB] = useState({})
   const { blogs, setBlogs } = useContext(ContextGlobal)
-  const user = useSelector(state => state.userLogin)
-  const userId = useSelector(state => state.userData)
-  console.log(userId)
+  const userInfoLog = useSelector(state => {
+    if(state.userLogin.length === undefined){
+      return null
+    }else{
+      return state.userLogin
+    }
+  })
+  const userData = useSelector(state => state.userData)
+  console.log(userData)
+  console.log(userInfoLog)
 
   const dispatch = useDispatch()
 
@@ -33,7 +39,7 @@ function App() {
 
 
   const sortByLikes = () => {
-    const arrSort = [...blogs]
+    const arrSort = [...blogList]
     arrSort.sort((a,b) => {
       return b.likes - a.likes
     })
@@ -48,12 +54,12 @@ function App() {
     <div className='container containerBlogs'>
       <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
       <Notification/>
-      {userId === null ? <LoginForm/> : <HeaderUserInfo/> }
-      {userId && <AddBlogForm/>}
-      {userId && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
-      {userId && <ul className='list-group' id='initialList'>
+      {userInfoLog === null ? <LoginForm/> : <HeaderUserInfo/> }
+      {userInfoLog && <AddBlogForm/>}
+      {userInfoLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
+      {userInfoLog && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog} userId={userId}/>
+          return <Blog key={blog.id} blog={blog} userData={userData}/>
         })}
       </ul>}
     </div>

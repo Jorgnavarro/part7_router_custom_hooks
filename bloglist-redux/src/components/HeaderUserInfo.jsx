@@ -1,6 +1,7 @@
 
 import { useDispatch } from 'react-redux'
-import { logOut } from '../reducers/loginReducer'
+import { logOut } from '../reducers/userReducer'
+import { logOutAf } from '../reducers/loginReducer'
 
 
 export function HeaderUserInfo() {
@@ -9,6 +10,7 @@ export function HeaderUserInfo() {
 
   const handleLogout = () => {
     dispatch(logOut())
+    dispatch(logOutAf())
   }
 
 

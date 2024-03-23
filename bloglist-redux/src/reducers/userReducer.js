@@ -3,15 +3,18 @@ import userService from '../services/user'
 
 const userDataSlice = createSlice({
   name: 'userData',
-  initialState: {},
+  initialState: null,
   reducers: {
     setUser(state, action){
       return action.payload
+    },
+    setLogout(){
+      return null
     }
   }
 })
 
-export const { setUser } = userDataSlice.actions
+export const { setUser, setLogout  } = userDataSlice.actions
 
 export const getLoggedUser = () => {
   return async dispatch => {
@@ -20,10 +23,16 @@ export const getLoggedUser = () => {
     console.log(userToSearch)
     if(userToSearch !== null){
       const userLogged = await userService.getUser(userToSearch.username)
-      dispatch(setUser(userLogged[0].id))
+      dispatch(setUser(userLogged[0]))
     }
   }
 }
 
+export const logOut = () => {
+  return async dispatch => {
+    window.localStorage.removeItem('loggedUserBlogs')
+    dispatch(setLogout())
+  }
+}
 
 export default userDataSlice.reducer
