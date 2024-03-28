@@ -4,7 +4,7 @@ import BlogDetail  from './BlogDetails'
 
 
 
-const Blog = ({ blog, userId }) => {
+const Blog = ({ blog, userData }) => {
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
 
@@ -20,7 +20,7 @@ const Blog = ({ blog, userId }) => {
         {blog.title} - {blog.author}
         <button id="btn-details" className="btn btn-outline-primary" onClick={toggleVisibility}>{visible ? 'Hide details':'View details'}</button>
       </div>
-      <BlogDetail key={blog.id} userId={userId} style={showWhenVisible} blog={blog} />
+      <BlogDetail key={blog.id} userData={userData} style={showWhenVisible} blog={blog} />
     </li>
   )
 }

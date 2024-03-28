@@ -1,41 +1,34 @@
-import { useEffect, useContext, useState } from 'react'
-import { ContextGlobal } from './context/globalContext'
-import blogService from './services/blog'
-import userService from './services/user'
+import { useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs, sortByLikesR } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/userReducer'
 
 
 
 function App() {
-  const { blogs, setBlogs } = useContext(ContextGlobal)
-  const userInfoLog = useSelector(state => {
-    if(state.userLogin.length === undefined){
-      return null
-    }else{
-      return state.userLogin
-    }
-  })
-  const userData = useSelector(state => state.userData)
-  console.log(userData)
-  console.log(userInfoLog)
-
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(initializeBlogs())
-    dispatch(getLoggedUser())
-  }, [dispatch])
-
+  const userData = useSelector(state => state.userData)
+  const userLog = useSelector(state => state.userLogin)
   const blogList = useSelector(state => {
     return state.blogs
   })
+  console.log(userData)
+  console.log(userLog)
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
+    const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
+    const userToSearch = JSON.parse(loggedUserJSON)
+    console.log(userToSearch)
+    if(userToSearch !== null){
+      dispatch(getLoggedUser(userToSearch))
+    }
+  }, [dispatch, userLog])
 
 
   const sortByLikes = () => {
@@ -43,7 +36,7 @@ function App() {
     arrSort.sort((a,b) => {
       return b.likes - a.likes
     })
-    setBlogs(arrSort)
+    dispatch(sortByLikesR(arrSort))
   }
 
 
@@ -54,10 +47,10 @@ function App() {
     <div className='container containerBlogs'>
       <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
       <Notification/>
-      {userInfoLog === null ? <LoginForm/> : <HeaderUserInfo/> }
-      {userInfoLog && <AddBlogForm/>}
-      {userInfoLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
-      {userInfoLog && <ul className='list-group' id='initialList'>
+      {userLog === null ? <LoginForm/> : <HeaderUserInfo/> }
+      {userLog && <AddBlogForm/>}
+      {userLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
+      {userLog && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
           return <Blog key={blog.id} blog={blog} userData={userData}/>
         })}

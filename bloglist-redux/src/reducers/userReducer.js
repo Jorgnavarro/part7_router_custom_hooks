@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import userService from '../services/user'
+import blogService from '../services/blog'
 
 const userDataSlice = createSlice({
   name: 'userData',
@@ -8,31 +9,27 @@ const userDataSlice = createSlice({
     setUser(state, action){
       return action.payload
     },
-    setLogout(){
+    logOutU(){
       return null
     }
   }
 })
 
-export const { setUser, setLogout  } = userDataSlice.actions
+export const { setUser, logOutU } = userDataSlice.actions
 
-export const getLoggedUser = () => {
+export const getLoggedUser = (userToSearch) => {
   return async dispatch => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
-    const userToSearch = JSON.parse(loggedUserJSON)
-    console.log(userToSearch)
-    if(userToSearch !== null){
-      const userLogged = await userService.getUser(userToSearch.username)
-      dispatch(setUser(userLogged[0]))
-    }
+    const userLogged = await userService.getUser(userToSearch?.username)
+    dispatch(setUser(userLogged[0]))
+    blogService.setToken(userToSearch?.token)
   }
 }
 
-export const logOut = () => {
-  return async dispatch => {
-    window.localStorage.removeItem('loggedUserBlogs')
-    dispatch(setLogout())
+export const logOutUser = () => {
+  return dispatch => {
+    dispatch(logOutU())
   }
 }
+
 
 export default userDataSlice.reducer

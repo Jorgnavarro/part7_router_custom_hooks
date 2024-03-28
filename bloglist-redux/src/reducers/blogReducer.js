@@ -24,6 +24,12 @@ export const initializeBlogs = () => {
   }
 }
 
+export const sortByLikesR = (arrSort) => {
+  return dispatch => {
+    dispatch(setBlogs(arrSort))
+  }
+}
+
 export const createBlog = (blog) => {
   return async dispatch => {
     const newObject = {

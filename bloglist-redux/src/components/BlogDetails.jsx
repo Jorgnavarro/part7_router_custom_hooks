@@ -2,7 +2,7 @@ import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 
-const BlogDetail = ({ blog, style, userId }) => {
+const BlogDetail = ({ blog, style, userData }) => {
   const dispatch = useDispatch()
 
   const blogs = useSelector(state =>  state.blogs)
@@ -62,7 +62,7 @@ const BlogDetail = ({ blog, style, userId }) => {
       </li>
       <li>{blog.author}</li>
       <li id="container-btnDelete">
-        {blog.user?.id === userId ? (
+        {blog.user?.id === userData?.id ? (
           <button
             id="btn-delete"
             className="btn btn-outline-danger"

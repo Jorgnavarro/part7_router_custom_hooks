@@ -6,20 +6,20 @@ import blogService from '../services/blog'
 
 
 const userLoginSlice = createSlice({
-  name: 'user',
+  name: 'userLogin',
   initialState: {},
   reducers: {
     setUserLogin(state, action){
       console.log(action.payload)
       return action.payload
     },
-    setLogOutAf(){
+    setLogOut(){
       return null
     }
   }
 })
 
-export const { setUserLogin, setLogoutAf } = userLoginSlice.actions
+export const { setUserLogin, setLogOut } = userLoginSlice.actions
 
 export const setUserService = (username, password) => {
   return async dispatch => {
@@ -37,10 +37,10 @@ export const setUserService = (username, password) => {
   }
 }
 
-export const logOutAf = () => {
+export const logOut = () => {
   return async dispatch => {
     window.localStorage.removeItem('loggedUserBlogs')
-    dispatch(setLogoutAf())
+    dispatch(setLogOut())
   }
 }
 
