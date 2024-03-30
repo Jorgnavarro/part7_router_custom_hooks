@@ -22,6 +22,10 @@ function App() {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
     const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
     const userToSearch = JSON.parse(loggedUserJSON)
     console.log(userToSearch)
@@ -52,9 +56,10 @@ function App() {
       {userLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {userLog && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog} userData={userData}/>
+          return <Blog key={blog.id} blog={blog}/>
         })}
       </ul>}
+      <Notification className='mt-5'/>
     </div>
   )
 }

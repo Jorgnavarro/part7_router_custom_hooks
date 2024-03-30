@@ -2,14 +2,18 @@ import Swal from 'sweetalert2'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 
-const BlogDetail = ({ blog, style, userData }) => {
+
+const BlogDetail = ({ blog, style }) => {
   const dispatch = useDispatch()
-
   const blogs = useSelector(state =>  state.blogs)
-
+  console.log(blogs)
+  const userData = useSelector(state => state.userData?.id)
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
+    console.log(userData)
+    console.log(blog)
   }
+
 
 
   const handleDeleteBlog = () => {
@@ -26,6 +30,8 @@ const BlogDetail = ({ blog, style, userData }) => {
         dispatch(deleteABlogService(blog.id))
 
         const deletedBlog = blogs.find(b => b.id === blog.id)
+
+        console.log(deletedBlog)
 
         if(deletedBlog){
           Swal.fire({
@@ -62,7 +68,7 @@ const BlogDetail = ({ blog, style, userData }) => {
       </li>
       <li>{blog.author}</li>
       <li id="container-btnDelete">
-        {blog.user?.id === userData?.id ? (
+        {blog.user === userData ? (
           <button
             id="btn-delete"
             className="btn btn-outline-danger"
