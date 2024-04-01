@@ -6,12 +6,11 @@ import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 const BlogDetail = ({ blog, style }) => {
   const dispatch = useDispatch()
   const blogs = useSelector(state =>  state.blogs)
-  console.log(blogs)
+  console.log(blog)
   const userData = useSelector(state => state.userData?.id)
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
     console.log(userData)
-    console.log(blog)
   }
 
 
@@ -68,7 +67,7 @@ const BlogDetail = ({ blog, style }) => {
       </li>
       <li>{blog.author}</li>
       <li id="container-btnDelete">
-        {blog.user === userData ? (
+        {blog?.user?.id === userData ? (
           <button
             id="btn-delete"
             className="btn btn-outline-danger"

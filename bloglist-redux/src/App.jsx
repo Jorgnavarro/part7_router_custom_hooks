@@ -12,11 +12,9 @@ import { getLoggedUser } from './reducers/userReducer'
 
 function App() {
   const dispatch = useDispatch()
-  const userData = useSelector(state => state.userData)
+  const userData = useSelector(state => state.userData?.id)
   const userLog = useSelector(state => state.userLogin)
-  const blogList = useSelector(state => {
-    return state.blogs
-  })
+  const blogList = useSelector(state => state.blogs)
   console.log(userData)
   console.log(userLog)
 
@@ -25,14 +23,13 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(initializeBlogs())
     const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
     const userToSearch = JSON.parse(loggedUserJSON)
     console.log(userToSearch)
     if(userToSearch !== null){
       dispatch(getLoggedUser(userToSearch))
     }
-  }, [dispatch, userLog])
+  }, [dispatch, userData])
 
 
   const sortByLikes = () => {
@@ -56,7 +53,7 @@ function App() {
       {userLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {userLog && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog}/>
+          return <Blog key={blog.id} blog={blog} />
         })}
       </ul>}
       <Notification className='mt-5'/>
