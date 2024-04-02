@@ -6,16 +6,16 @@ import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 const BlogDetail = ({ blog, style }) => {
   const dispatch = useDispatch()
   const blogs = useSelector(state =>  state.blogs)
-  console.log(blog)
+
   const userData = useSelector(state => state.userData?.id)
+
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
-    console.log(userData)
   }
 
 
 
-  const handleDeleteBlog = () => {
+  const handleDeleteBlog = (id) => {
     Swal.fire({
       title: `Are you sure to delete ${blog.title} from your blogs?`,
       text: 'You won\'t be able to revert this!',
@@ -26,9 +26,10 @@ const BlogDetail = ({ blog, style }) => {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteABlogService(blog.id))
 
-        const deletedBlog = blogs.find(b => b.id === blog.id)
+        dispatch(deleteABlogService(id))
+
+        const deletedBlog = blogs.find(b => b.id === id)
 
         console.log(deletedBlog)
 
@@ -67,11 +68,11 @@ const BlogDetail = ({ blog, style }) => {
       </li>
       <li>{blog.author}</li>
       <li id="container-btnDelete">
-        {blog?.user?.id === userData ? (
+        {blog?.user?.id === userData || blog?.user === userData ? (
           <button
             id="btn-delete"
             className="btn btn-outline-danger"
-            onClick={() => handleDeleteBlog()}
+            onClick={() => handleDeleteBlog(blog.id)}
           >
             Remove
           </button>

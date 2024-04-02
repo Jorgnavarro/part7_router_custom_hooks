@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import userService from '../services/user'
-import blogService from '../services/blog'
 
+const userLog = window.localStorage.getItem('userLog')
+
+const stateInitial = JSON.parse(userLog)
 
 
 const userDataSlice = createSlice({
   name: 'userData',
-  initialState: null,
+  initialState: stateInitial,
   reducers: {
     setUser(state, action){
       return action.payload
@@ -19,16 +20,15 @@ const userDataSlice = createSlice({
 
 export const { setUser, logOutU } = userDataSlice.actions
 
-export const getLoggedUser = (userToSearch) => {
+export const getLoggedUser = (user) => {
   return async dispatch => {
-    const userLogged = await userService.getUser(userToSearch?.username)
-    dispatch(setUser(userLogged[0]))
-    blogService.setToken(userToSearch?.token)
+    dispatch(setUser(user))
   }
 }
 
 export const logOutUser = () => {
   return dispatch => {
+    window.localStorage.removeItem('userLog')
     dispatch(logOutU())
   }
 }

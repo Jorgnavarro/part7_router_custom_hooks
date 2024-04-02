@@ -55,7 +55,10 @@ export const voteABlogService = ( id ) => {
 
       const updatedBlog = await blogService.update(id, updatedObject)
 
+      console.log(updatedBlog)
       const updatedList = blogs.map(blog => blog.id !== id ? blog : updatedBlog)
+
+      console.log(updatedList)
 
       dispatch(setBlogs(updatedList))
 

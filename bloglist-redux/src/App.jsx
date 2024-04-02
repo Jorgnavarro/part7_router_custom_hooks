@@ -7,14 +7,17 @@ import { AddBlogForm } from './components/AddBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, sortByLikesR } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/userReducer'
+import userService from './services/user'
+import blogService from './services/blog'
 
 
 
 function App() {
   const dispatch = useDispatch()
-  const userData = useSelector(state => state.userData?.id)
+  const userData = useSelector(state => state.userData)
   const userLog = useSelector(state => state.userLogin)
   const blogList = useSelector(state => state.blogs)
+  console.log(blogList)
   console.log(userData)
   console.log(userLog)
 
@@ -23,13 +26,19 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
-    const userToSearch = JSON.parse(loggedUserJSON)
-    console.log(userToSearch)
-    if(userToSearch !== null){
-      dispatch(getLoggedUser(userToSearch))
+    async function getLocalUser (){
+      const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
+      const userToSearch = JSON.parse(loggedUserJSON)
+      if(userToSearch){
+        const response = await userService.getUser(userToSearch.username)
+        dispatch(getLoggedUser(response[0]))
+        blogService.setToken(userToSearch.token)
+      }
+
     }
-  }, [dispatch, userData])
+    getLocalUser()
+  }, [dispatch])
+
 
 
   const sortByLikes = () => {
