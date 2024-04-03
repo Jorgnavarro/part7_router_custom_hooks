@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService  from '../services/blog'
 import { setNotification } from './notificationReducer'
+import Swal from 'sweetalert2'
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -76,12 +77,24 @@ export const deleteABlogService = (id) => {
 
       await blogService.deleteBlog(id)
 
-      const updatedList = blogs.filter(blog => blog.id !== id)
+      const updatedList = await blogs.filter(blog => blog.id !== id)
 
       dispatch(setBlogs(updatedList))
+      Swal.fire({
+        icon: 'success',
+        title: 'Your blog has been deleted',
+        showConfirmButton: false,
+        timer: 2000,
+      })
 
     } catch(e){
       dispatch(setNotification(`Please login again - ${e.message}`))
+      Swal.fire({
+        icon: 'error',
+        title: 'The blog cannot be deleted, please log in again',
+        showConfirmButton: false,
+        timer: 1000,
+      })
     }
   }
 }

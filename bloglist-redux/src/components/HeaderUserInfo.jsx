@@ -7,7 +7,7 @@ import { logOutUser } from '../reducers/userReducer'
 export function HeaderUserInfo() {
 
   const dispatch = useDispatch()
-  const username = useSelector(state => state.userData?.name)
+  const username = useSelector(state => state.userLogin?.name)
 
   const handleLogout = () => {
     dispatch(logOut())

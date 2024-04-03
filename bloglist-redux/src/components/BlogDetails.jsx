@@ -5,9 +5,8 @@ import { voteABlogService, deleteABlogService } from '../reducers/blogReducer'
 
 const BlogDetail = ({ blog, style }) => {
   const dispatch = useDispatch()
-  const blogs = useSelector(state =>  state.blogs)
 
-  const userData = useSelector(state => state.userData?.id)
+  const userData = useSelector(state => state.userData)
 
   const handleLikes = (id) => {
     dispatch(voteABlogService(id))
@@ -26,29 +25,7 @@ const BlogDetail = ({ blog, style }) => {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-
         dispatch(deleteABlogService(id))
-
-        const deletedBlog = blogs.find(b => b.id === id)
-
-        console.log(deletedBlog)
-
-        if(deletedBlog){
-          Swal.fire({
-            icon: 'error',
-            title: 'The blog cannot be deleted, please log in again',
-            showConfirmButton: false,
-            timer: 1000,
-          })
-
-        }else{
-          Swal.fire({
-            icon: 'success',
-            title: 'Your blog has been deleted',
-            showConfirmButton: false,
-            timer: 2000,
-          })
-        }
       }
     })
   }

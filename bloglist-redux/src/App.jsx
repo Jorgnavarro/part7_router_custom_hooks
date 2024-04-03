@@ -7,8 +7,7 @@ import { AddBlogForm } from './components/AddBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, sortByLikesR } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/userReducer'
-import userService from './services/user'
-import blogService from './services/blog'
+
 
 
 
@@ -21,23 +20,26 @@ function App() {
   console.log(userData)
   console.log(userLog)
 
+  dispatch(getLoggedUser())
+
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
-  useEffect(() => {
-    async function getLocalUser (){
-      const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
-      const userToSearch = JSON.parse(loggedUserJSON)
-      if(userToSearch){
-        const response = await userService.getUser(userToSearch.username)
-        dispatch(getLoggedUser(response[0]))
-        blogService.setToken(userToSearch.token)
-      }
+  // useEffect(() => {
+  //   async function getLocalUser (){
+  //     const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
+  //     const userToSearch = JSON.parse(loggedUserJSON)
+  //     if(userToSearch){
+  //       const response = await userService.getUser(userToSearch.username)
+  //       dispatch(getLoggedUser(response[0]?.id))
+  //       blogService.setToken(userToSearch.token)
+  //       window.localStorage.setItem('userLog', JSON.stringify(response[0]?.id))
+  //     }
 
-    }
-    getLocalUser()
-  }, [dispatch])
+  //   }
+  //   getLocalUser()
+  // }, [dispatch])
 
 
 

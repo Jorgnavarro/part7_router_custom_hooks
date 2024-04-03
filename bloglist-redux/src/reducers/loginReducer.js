@@ -3,11 +3,13 @@ import loginService from '../services/login'
 import { setNotification } from './notificationReducer'
 import blogService from '../services/blog'
 
+const loginUser = window.localStorage.getItem('loggedUserBlogs')
 
+const stateInitial = JSON.parse(loginUser)
 
 const userLoginSlice = createSlice({
   name: 'userLogin',
-  initialState: {},
+  initialState: stateInitial,
   reducers: {
     setUserLogin(state, action){
       console.log(action.payload)
