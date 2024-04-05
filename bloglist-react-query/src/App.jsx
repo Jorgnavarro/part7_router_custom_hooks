@@ -7,7 +7,7 @@ import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
-
+import { useQuery } from '@tanstack/react-query'
 
 function App() {
 
@@ -90,6 +90,19 @@ function App() {
     }
   }
 
+  const result = useQuery({
+    queryKey: ['blogs'],
+    queryFn: () => blogService.getAll().then(response => response)
+  })
+
+  if(result.isLoading){
+    return <div>Loading data...</div>
+  }
+
+  const blogsQuery = result.data
+
+  console.log(JSON.parse(JSON.stringify(result)))
+
   return (
     <div className='container containerBlogs'>
       <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
@@ -99,7 +112,7 @@ function App() {
       {user && <AddBlogForm/>}
       {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {user && <ul className='list-group' id='initialList'>
-        {blogs.map(blog => {
+        {blogsQuery.map(blog => {
           return <Blog key={blog.id} blog={blog} userDDBB={userDDBB} updatedBlog={updateLikesBlog} deleteABlog={deleteABlog}/>
         })}
       </ul>}
