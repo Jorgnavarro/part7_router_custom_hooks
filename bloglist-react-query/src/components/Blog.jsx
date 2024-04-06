@@ -2,17 +2,27 @@ import { useState, useContext } from 'react'
 import BlogDetail  from './BlogDetails'
 import { ContextGlobal } from '../context/globalContext'
 import PropTypes from 'prop-types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { updateLikes } from '../requests'
 
 
-const Blog = ({ blog, updatedBlog, userDDBB, deleteABlog }) => {
+const Blog = ({ blog, userDDBB, deleteABlog }) => {
   const [like, setLike] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
   const { modifierLikes, setModifierLikes } = useContext(ContextGlobal)
+  const queryClient = useQueryClient()
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
+
+  const updateBlogMutation = useMutation({
+    mutationFn: updateLikes,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['blogs']})
+    }
+  })
 
 
   const handleLikes = () => {
@@ -21,7 +31,7 @@ const Blog = ({ blog, updatedBlog, userDDBB, deleteABlog }) => {
       ...blog,
       likes: like + 1
     }
-    updatedBlog(blog.id, blogUpdated)
+    updateBlogMutation.mutate({...blogUpdated})
     setModifierLikes(modifierLikes + 1)
   }
 
@@ -38,7 +48,6 @@ const Blog = ({ blog, updatedBlog, userDDBB, deleteABlog }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  updatedBlog: PropTypes.func.isRequired,
   userDDBB: PropTypes.string.isRequired,
   deleteABlog: PropTypes.func.isRequired
 }

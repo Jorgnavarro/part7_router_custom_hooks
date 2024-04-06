@@ -8,10 +8,13 @@ import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
 import { useQuery } from '@tanstack/react-query'
+import { getBlogs } from './requests'
 
 function App() {
 
   const [userDDBB, setUserDDBB] = useState({})
+
+
 
   const { blogs, setBlogs, errorMessage, infoMessage, setUser, user, modifierLikes } = useContext(ContextGlobal)
 
@@ -61,19 +64,21 @@ function App() {
 
   },[user])
 
-  const updateLikesBlog = async (id, newObject) => {
-    try{
-      const response = await blogService.update(id, newObject)
 
-      setBlogs(
-        blogs.map( blog => {
-          return blog.id !== response.id ? blog : response
-        })
-      )
-    }catch(error){
-      console.log('You need to provide a jwt or login again')
-    }
-  }
+
+  // const updateLikesBlog = async (id, newObject) => {
+  //   try{
+  //     const response = await blogService.update(id, newObject)
+
+  //     setBlogs(
+  //       blogs.map( blog => {
+  //         return blog.id !== response.id ? blog : response
+  //       })
+  //     )
+  //   }catch(error){
+  //     console.log('You need to provide a jwt or login again')
+  //   }
+  // }
 
   const deleteABlog = async (id) => {
 
@@ -92,7 +97,7 @@ function App() {
 
   const result = useQuery({
     queryKey: ['blogs'],
-    queryFn: () => blogService.getAll().then(response => response)
+    queryFn: getBlogs
   })
 
   if(result.isLoading){
@@ -113,7 +118,7 @@ function App() {
       {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
       {user && <ul className='list-group' id='initialList'>
         {blogsQuery.map(blog => {
-          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB} updatedBlog={updateLikesBlog} deleteABlog={deleteABlog}/>
+          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB}  deleteABlog={deleteABlog}/>
         })}
       </ul>}
     </div>

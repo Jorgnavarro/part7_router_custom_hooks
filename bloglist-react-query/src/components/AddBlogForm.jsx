@@ -2,6 +2,8 @@ import { useState, useContext, useRef } from 'react'
 import blogService from '../services/blog'
 import { ContextGlobal } from '../context/globalContext'
 import Togglable from './Togglable'
+import { createBlog, updateLikes } from '../requests'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 
 export function AddBlogForm () {
@@ -10,6 +12,14 @@ export function AddBlogForm () {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const blogFormRef = useRef()
+  const queryClient = useQueryClient()
+
+  const newBlogMutation = useMutation({ 
+    mutationFn: createBlog,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs']})
+    }
+  })
 
 
   const addBlog = (e) => {
@@ -21,13 +31,17 @@ export function AddBlogForm () {
         url
       }
       blogFormRef.current.toggleVisibility()
-      blogService.create(newBlog)
-        .then(blogCreated => {
-          setBlogs([...blogs, blogCreated])
-          setTitle('')
-          setAuthor('')
-          setUrl('')
-        })
+      // blogService.create(newBlog)
+      //   .then(blogCreated => {
+      //     setBlogs([...blogs, blogCreated])
+      //     setTitle('')
+      //     setAuthor('')
+      //     setUrl('')
+      //   })
+      newBlogMutation.mutate({...newBlog})
+      setTitle('')
+      setAuthor('')
+      setUrl('')
       setInfoMessage(`${title}, added ✅`)
       setTimeout(() => {
         setInfoMessage(null)
