@@ -16,15 +16,7 @@ function App() {
 
 
 
-  const { blogs, setBlogs, errorMessage, infoMessage, setUser, user, modifierLikes } = useContext(ContextGlobal)
-
-  useEffect(() => {
-    blogService.getAll()
-      .then(initialBlogList => {
-        setBlogs(initialBlogList)
-      })
-  }, [setBlogs, modifierLikes])
-
+  const { blogs, setBlogs, errorMessage, infoMessage, setUser, user } = useContext(ContextGlobal)
 
 
   const sortByLikes = () => {
