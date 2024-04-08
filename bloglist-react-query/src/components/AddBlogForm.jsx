@@ -16,8 +16,11 @@ export function AddBlogForm () {
 
   const newBlogMutation = useMutation({ 
     mutationFn: createBlog,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blogs']})
+    onSuccess: (newBlog) => {
+      // queryClient.invalidateQueries({ queryKey: ['blogs']})
+      //better performance =>
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
     }
   })
 

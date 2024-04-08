@@ -19,8 +19,18 @@ const Blog = ({ blog, userDDBB, deleteABlog }) => {
 
   const updateBlogMutation = useMutation({
     mutationFn: updateLikes,
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['blogs']})
+    onSuccess: (blogUpdated) => {
+      // queryClient.invalidateQueries({queryKey: ['blogs']})
+      //better performance
+      console.log(blogUpdated)
+      const blogs = queryClient.getQueryData(['blogs'])
+      console.log(blogs)
+
+      const updatedList = blogs.map(blog => {
+        return blog.id === blogUpdated.id ? blogUpdated : blog
+      })
+      console.log(updatedList)
+      queryClient.setQueryData(['blogs'], updatedList)
     }
   })
 
