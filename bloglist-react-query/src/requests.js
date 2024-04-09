@@ -11,10 +11,10 @@ export const createBlog = newBlog => blogService.create(newBlog).then(response =
 export const updateLikes = (blog) => blogService.update(blog).then(response => response)
 .catch(error => 
        Swal.fire({
-        icon: 'error',
-        title: `${error.message} - Please log in again`,
-        showConfirmButton: false,
-        timer: 2000,
+              icon: 'error',
+              title: `${error.message} - Please log in again`,
+              showConfirmButton: false,
+              timer: 2000,
        })                                 
                                         
 )

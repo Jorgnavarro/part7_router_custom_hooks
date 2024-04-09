@@ -9,6 +9,7 @@ import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
 import { useQuery } from '@tanstack/react-query'
 import { getBlogs } from './requests'
+import { alertTest } from './testNotification'
 
 function App() {
 
@@ -89,7 +90,8 @@ function App() {
 
   const result = useQuery({
     queryKey: ['blogs'],
-    queryFn: getBlogs
+    queryFn: getBlogs,
+    refetchOnWindowFocus: false
   })
 
   if(result.isLoading){
