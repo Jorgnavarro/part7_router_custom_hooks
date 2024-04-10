@@ -18,3 +18,13 @@ export const updateLikes = (blog) => blogService.update(blog).then(response => r
        })                                 
                                         
 )
+
+export const deletedABlog = (id) => blogService.deleteBlog(id).then(response => response)
+.catch(error => {
+       Swal.fire({
+              icon: 'error',
+              title: `${error.message} - Please log in again`,
+              showConfirmButton: false,
+              timer: 2000,
+       })
+})

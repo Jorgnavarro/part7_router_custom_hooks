@@ -1,10 +1,29 @@
 import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
-
+import { deletedABlog } from '../requests'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
 
-  const handleDeleteBlog = () => {
+  const queryClient = useQueryClient()
+
+  const deletedABlogMutation = useMutation({
+    mutationFn: deletedABlog,
+    onSuccess: () => {
+      console.log(blog.id)
+      const blogs = queryClient.getQueryData(['blogs'])
+      const updatedList = blogs.filter(b => b.id !== blog.id)
+      queryClient.setQueryData(['blogs'], updatedList)
+
+      Swal.fire({
+        icon: 'success',
+        title: `The blog ${blog.title} has been deleted successfully`,
+      })
+    }
+  })
+
+  const handleDeleteBlog = (id) => {
+    console.log(id)
     Swal.fire({
       title: `Are you sure to delete ${blog.title} from your blogs?`,
       text: 'You won\'t be able to revert this!',
@@ -15,13 +34,7 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteABlog(blog.id)
-        Swal.fire({
-          icon: 'success',
-          title: 'Your blog has been deleted',
-          showConfirmButton: false,
-          timer: 3000
-        })
+        deletedABlogMutation.mutate(id)
       }
     })
   }
@@ -38,7 +51,7 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
         {blog.author}
       </li>
       <li id='container-btnDelete'>
-        {blog.user?.id === userDDBB ? <button id='btn-delete' className="btn btn-outline-danger" onClick={() => handleDeleteBlog()}>Remove</button> : ''}
+        {blog.user?.id === userDDBB ? <button id='btn-delete' className="btn btn-outline-danger" onClick={() => handleDeleteBlog(blog.id)}>Remove</button> : ''}
       </li>
     </ul>
   )
