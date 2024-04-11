@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext } from 'react'
 import { ContextGlobal } from './context/globalContext'
 import blogService from './services/blog'
 import userService from './services/user'
@@ -7,27 +7,26 @@ import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
 import { HeaderUserInfo } from './components/HeaderUserInfo'
 import { AddBlogForm } from './components/AddBlogForm'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getBlogs } from './requests'
-import { alertTest } from './testNotification'
+import { NotificationContextProvider } from './context/notificationContext'
 
 function App() {
 
-  const [userDDBB, setUserDDBB] = useState({})
 
+  const { setUser, user, setUserDDBB } = useContext(ContextGlobal)
 
-
-  const { blogs, setBlogs, errorMessage, infoMessage, setUser, user } = useContext(ContextGlobal)
+  const queryClient = useQueryClient()
 
 
   const sortByLikes = () => {
-    const arrSort = [...blogs]
+    const blogsList = queryClient.getQueryData(['blogs'])
+    const arrSort = [...blogsList]
     arrSort.sort((a,b) => {
       return b.likes - a.likes
     })
-    setBlogs(arrSort)
+    queryClient.setQueryData(['blogs'], arrSort)
   }
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
@@ -55,38 +54,9 @@ function App() {
     }
     getLocalUser()
 
-  },[user])
+  },[user, setUserDDBB])
 
 
-
-  // const updateLikesBlog = async (id, newObject) => {
-  //   try{
-  //     const response = await blogService.update(id, newObject)
-
-  //     setBlogs(
-  //       blogs.map( blog => {
-  //         return blog.id !== response.id ? blog : response
-  //       })
-  //     )
-  //   }catch(error){
-  //     console.log('You need to provide a jwt or login again')
-  //   }
-  // }
-
-  const deleteABlog = async (id) => {
-
-    try{
-      const response = await blogService.deleteBlog(id)
-      console.log(response)
-      setBlogs(
-        blogs.filter(blog => {
-          return blog.id !== id
-        })
-      )
-    }catch(error){
-      console.log(error)
-    }
-  }
 
   const result = useQuery({
     queryKey: ['blogs'],
@@ -100,22 +70,28 @@ function App() {
 
   const blogsQuery = result.data
 
+  
+
+
   console.log(JSON.parse(JSON.stringify(result)))
 
+
   return (
-    <div className='container containerBlogs'>
-      <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
-      <Notification className="alert-danger" message={errorMessage}/>
-      {user === null ? <LoginForm/> : <HeaderUserInfo/> }
-      <Notification className="alert-success" message={infoMessage}/>
-      {user && <AddBlogForm/>}
-      {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
-      {user && <ul className='list-group' id='initialList'>
-        {blogsQuery.map(blog => {
-          return <Blog key={blog.id} blog={blog} userDDBB={userDDBB}  deleteABlog={deleteABlog}/>
-        })}
-      </ul>}
-    </div>
+    <NotificationContextProvider>
+      <div className='container containerBlogs'>
+        <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
+        <Notification/>
+        {user === null ? <LoginForm/> : <HeaderUserInfo/> }
+        {user && <AddBlogForm/>}
+        {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
+        {user && <ul className='list-group' id='initialList'>
+          {blogsQuery?.map(blog => {
+            return <Blog key={blog.id} blog={blog}/>
+          })}
+        </ul>}
+        <Notification/>
+      </div>
+    </NotificationContextProvider>
   )
 }
 

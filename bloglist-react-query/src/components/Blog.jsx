@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState, useContext } from 'react'
 import BlogDetail  from './BlogDetails'
 import { ContextGlobal } from '../context/globalContext'
-import PropTypes from 'prop-types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateLikes } from '../requests'
 
 
-const Blog = ({ blog, userDDBB, deleteABlog }) => {
+const Blog = ({ blog }) => {
   const [like, setLike] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -51,16 +51,11 @@ const Blog = ({ blog, userDDBB, deleteABlog }) => {
         {blog.title} - {blog.author}
         <button id="btn-details" className="btn btn-outline-primary" onClick={toggleVisibility}>{visible ? 'Hide details':'View details'}</button>
       </div>
-      <BlogDetail key={blog.id} userDDBB={userDDBB} style={showWhenVisible} blog={blog} handleLikes={handleLikes} deleteABlog={deleteABlog}/>
+      <BlogDetail key={blog.id} style={showWhenVisible} blog={blog} handleLikes={handleLikes}/>
     </li>
   )
 }
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  userDDBB: PropTypes.string.isRequired,
-  deleteABlog: PropTypes.func.isRequired
-}
 
 
 export default Blog

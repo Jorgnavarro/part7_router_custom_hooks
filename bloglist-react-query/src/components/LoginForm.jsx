@@ -2,11 +2,12 @@ import { useContext } from 'react'
 import { ContextGlobal } from '../context/globalContext'
 import loginService from '../services/login'
 import blogService from '../services/blog'
+import { useNotify } from '../context/notificationContext'
 
 
 export function LoginForm () {
-  const { setErrorMessage, setInfoMessage, username, setUsername, setUser, password, setPassword } = useContext(ContextGlobal)
-
+  const { username, setUsername, setUser, password, setPassword } = useContext(ContextGlobal)
+  const notifyWith = useNotify()
   const handleLogin = async (event) => {
     event.preventDefault()
     try{
@@ -20,17 +21,10 @@ export function LoginForm () {
       setUser(user)
       setUsername('')
       setPassword('')
-
-      setInfoMessage(`Welcome ${username}`)
-      setTimeout(() => {
-        setInfoMessage(null)
-      }, 5000)
-
+      notifyWith(`Welcome ${username}`)
     }catch(exception){
-      setErrorMessage('Wrong username or password')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notifyWith('Wrong username or password')
+      console.log(exception)
     }
   }
 

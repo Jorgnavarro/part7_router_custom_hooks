@@ -1,18 +1,17 @@
-import { useState, useContext, useRef } from 'react'
-import blogService from '../services/blog'
-import { ContextGlobal } from '../context/globalContext'
+import { useState, useRef } from 'react'
 import Togglable from './Togglable'
-import { createBlog, updateLikes } from '../requests'
+import { createBlog } from '../requests'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNotify } from '../context/notificationContext'
 
 
 export function AddBlogForm () {
-  const { setBlogs, blogs, setErrorMessage, setInfoMessage } = useContext(ContextGlobal)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const blogFormRef = useRef()
   const queryClient = useQueryClient()
+  const notifyWith = useNotify()
 
   const newBlogMutation = useMutation({ 
     mutationFn: createBlog,
@@ -34,28 +33,13 @@ export function AddBlogForm () {
         url
       }
       blogFormRef.current.toggleVisibility()
-      // blogService.create(newBlog)
-      //   .then(blogCreated => {
-      //     setBlogs([...blogs, blogCreated])
-      //     setTitle('')
-      //     setAuthor('')
-      //     setUrl('')
-      //   })
       newBlogMutation.mutate({...newBlog})
       setTitle('')
       setAuthor('')
       setUrl('')
-      setInfoMessage(`${title}, added ✅`)
-      setTimeout(() => {
-        setInfoMessage(null)
-      }, 5000)
+      notifyWith(`${title}, added ✅`)
     }else{
-      setErrorMessage(
-        'Some of the fields are invalid'
-      )
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      notifyWith('Some of the fields are invalid')
     }
   }
 

@@ -2,8 +2,12 @@ import Swal from 'sweetalert2'
 import PropTypes from 'prop-types'
 import { deletedABlog } from '../requests'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useContext } from 'react'
+import { ContextGlobal } from '../context/globalContext'
 
-const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
+const BlogDetail = ({ blog, style, handleLikes }) => {
+
+  const { userDDBB } = useContext(ContextGlobal)
 
   const queryClient = useQueryClient()
 
@@ -21,6 +25,8 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
       })
     }
   })
+
+  console.log(blog.user)
 
   const handleDeleteBlog = (id) => {
     console.log(id)
@@ -51,7 +57,7 @@ const BlogDetail = ({ blog, style, handleLikes, userDDBB, deleteABlog }) => {
         {blog.author}
       </li>
       <li id='container-btnDelete'>
-        {blog.user?.id === userDDBB ? <button id='btn-delete' className="btn btn-outline-danger" onClick={() => handleDeleteBlog(blog.id)}>Remove</button> : ''}
+        {blog.user?.id === userDDBB || blog.user === userDDBB ? <button id='btn-delete' className="btn btn-outline-danger" onClick={() => handleDeleteBlog(blog.id)}>Remove</button> : ''}
       </li>
     </ul>
   )
