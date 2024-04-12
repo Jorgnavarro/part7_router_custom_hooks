@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import Swal from 'sweetalert2'
-import PropTypes from 'prop-types'
 import { deletedABlog } from '../requests'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { ContextGlobal } from '../context/globalContext'
+
 
 const BlogDetail = ({ blog, style, handleLikes }) => {
 
@@ -13,20 +14,16 @@ const BlogDetail = ({ blog, style, handleLikes }) => {
 
   const deletedABlogMutation = useMutation({
     mutationFn: deletedABlog,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      if(response?.response?.status !== 401){
       console.log(blog.id)
       const blogs = queryClient.getQueryData(['blogs'])
       const updatedList = blogs.filter(b => b.id !== blog.id)
       queryClient.setQueryData(['blogs'], updatedList)
-
-      Swal.fire({
-        icon: 'success',
-        title: `The blog ${blog.title} has been deleted successfully`,
-      })
+      }
     }
   })
 
-  console.log(blog.user)
 
   const handleDeleteBlog = (id) => {
     console.log(id)
@@ -40,7 +37,11 @@ const BlogDetail = ({ blog, style, handleLikes }) => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        deletedABlogMutation.mutate(id)
+        deletedABlogMutation.mutate(id, {
+          onError: () => {
+            console.log("hola")
+          }
+        })
       }
     })
   }
@@ -61,14 +62,6 @@ const BlogDetail = ({ blog, style, handleLikes }) => {
       </li>
     </ul>
   )
-}
-
-BlogDetail.propTypes = {
-  blog: PropTypes.object.isRequired,
-  style: PropTypes.object.isRequired,
-  handleLikes: PropTypes.func.isRequired,
-  userDDBB: PropTypes.string.isRequired,
-  deleteABlog: PropTypes.func.isRequired
 }
 
 export default BlogDetail
