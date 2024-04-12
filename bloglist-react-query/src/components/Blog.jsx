@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import BlogDetail  from './BlogDetails'
-import { ContextGlobal } from '../context/globalContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateLikes } from '../requests'
 
@@ -10,7 +9,6 @@ const Blog = ({ blog }) => {
   const [like, setLike] = useState(blog.likes)
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
-  const { modifierLikes, setModifierLikes } = useContext(ContextGlobal)
   const queryClient = useQueryClient()
 
   const toggleVisibility = () => {
@@ -41,7 +39,6 @@ const Blog = ({ blog }) => {
       likes: like + 1
     }
     updateBlogMutation.mutate({...blogUpdated})
-    setModifierLikes(modifierLikes + 1)
   }
 
   return (

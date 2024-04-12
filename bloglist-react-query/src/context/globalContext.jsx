@@ -15,7 +15,6 @@ export const ContextProvider = ({ children }) => {
 
   const [user, setUser] = useState(null)
 
-  const [modifierLikes, setModifierLikes] = useState(0)
 
   const values = {
     blogs,
@@ -27,9 +26,7 @@ export const ContextProvider = ({ children }) => {
     password,
     setPassword,
     user,
-    setUser,
-    modifierLikes,
-    setModifierLikes,
+    setUser
   }
 
   return (

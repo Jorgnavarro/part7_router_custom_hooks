@@ -10,13 +10,16 @@ import { AddBlogForm } from './components/AddBlogForm'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getBlogs } from './requests'
 import { NotificationContextProvider } from './context/notificationContext'
+import { Routes, Route, useMatch } from 'react-router-dom'
+import { UsersList } from './routes/UsersList'
+
 
 function App() {
-
-
   const { setUser, user, setUserDDBB } = useContext(ContextGlobal)
 
   const queryClient = useQueryClient()
+
+  const match = useMatch('/users/:id')
 
 
   const sortByLikes = () => {
@@ -82,6 +85,9 @@ function App() {
         <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
         <Notification/>
         {user === null ? <LoginForm/> : <HeaderUserInfo/> }
+        <Routes>
+          <Route path='/users' element={<UsersList/>}/>
+        </Routes>
         {user && <AddBlogForm/>}
         {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
         {user && <ul className='list-group' id='initialList'>
