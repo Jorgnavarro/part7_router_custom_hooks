@@ -84,17 +84,21 @@ function App() {
       <div className='container containerBlogs'>
         <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
         <Notification/>
-        {user === null ? <LoginForm/> : <HeaderUserInfo/> }
+        {user === null ? <LoginForm/> : <HeaderUserInfo/>}
         <Routes>
           <Route path='/users' element={<UsersList/>}/>
-        </Routes>
-        {user && <AddBlogForm/>}
-        {user && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
-        {user && <ul className='list-group' id='initialList'>
+          <Route path='/' element={(user && <AddBlogForm/>) ? 
+          <>
+          <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>
+
+          <ul className='list-group' id='initialList'>
           {blogsQuery?.map(blog => {
             return <Blog key={blog.id} blog={blog}/>
           })}
-        </ul>}
+          </ul> 
+          </>
+          : ''}/>
+        </Routes>
         <Notification/>
       </div>
     </NotificationContextProvider>
