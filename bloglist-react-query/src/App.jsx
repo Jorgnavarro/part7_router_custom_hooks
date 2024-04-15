@@ -12,6 +12,7 @@ import { getBlogs } from './requests'
 import { NotificationContextProvider } from './context/notificationContext'
 import { Routes, Route, useMatch } from 'react-router-dom'
 import { UsersList } from './routes/UsersList'
+import BlogsUser from './routes/BlogsUser'
 
 
 function App() {
@@ -73,7 +74,10 @@ function App() {
 
   const blogsQuery = result.data
 
-  
+  const uBlogs = match ? blogsQuery.filter( b => b.user?.id === match.params.id)
+  : null
+
+  console.log(uBlogs)
 
 
   console.log(JSON.parse(JSON.stringify(result)))
@@ -86,6 +90,7 @@ function App() {
         <Notification/>
         {user === null ? <LoginForm/> : <HeaderUserInfo/>}
         <Routes>
+          <Route path='/users/:id' element={<BlogsUser uBlogs={uBlogs}/>}/>
           <Route path='/users' element={<UsersList/>}/>
           <Route path='/' element={(user && <AddBlogForm/>) ? 
           <>

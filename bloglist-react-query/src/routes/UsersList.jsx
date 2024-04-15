@@ -1,9 +1,10 @@
-import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getUsers } from "../userRequests"
+import { useNavigate } from 'react-router-dom'
 
 export function UsersList (){
-    const [ userList, setUserList] = useState([])
+
+    const navigate = useNavigate();
 
     const result = useQuery({
         queryKey: ['users'],
@@ -14,13 +15,18 @@ export function UsersList (){
         return <div>Loading data...</div>
       }
     
-      const usersQuery = result.data
+    const usersQuery = result.data
+
+    const handleBlogsUser = (id) => {
+      console.log(id)
+      navigate(`/users/${id}`)
+    }
 
 
     return(
-    <div>
-        <h1>Users</h1>
-        <table className="table" id="tableUsers">
+    <div className="mt-5">
+        <h1 className="text-center">Users</h1>
+        <table className="table mt-5" id="tableUsers">
             <thead>
               <tr>
                 <th scope="col">Name</th>
@@ -31,11 +37,10 @@ export function UsersList (){
               
                 {usersQuery.map(user => {
                     return <tr key={user.id}>
-                            <th scope="row">{user.name}</th>
-                            <td colSpan="col-3">{user.blogs.length}</td>
+                            <th className="authorBlog"scope="row" onClick={() => handleBlogsUser(user.id)}>{user.name}</th>
+                            <td className="text-center" colSpan="col-3">{user.blogs.length}</td>
                           </tr>
                 })}
-               
             </tbody>
         </table>
     </div>
