@@ -1,5 +1,10 @@
 export function UsersList (){
     return(
-    <h1>Users</h1>
+    <div>
+        <h1>Users</h1>
+        <ul>
+            <li></li>
+        </ul>
+    </div>
     )
 }
