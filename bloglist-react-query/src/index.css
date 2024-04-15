@@ -95,6 +95,11 @@ h1 {
   border: solid;
 }
 
+#tableUsers{
+  background-color: transparent;
+  color: silver;
+}
+
 .containerInfoBlog{
   display: flex;
   align-items: center;
