@@ -87,6 +87,15 @@ h1 {
 .infoBlog{
   gap: 2rem;
 }
+
+.individualBlog{
+  cursor: pointer;
+}
+
+.individualBlog:hover{
+  color: #747bff;
+}
+
 #colorList{
   background-color: transparent;
   color: silver;

@@ -13,7 +13,7 @@ import { NotificationContextProvider } from './context/notificationContext'
 import { Routes, Route, useMatch } from 'react-router-dom'
 import { UsersList } from './routes/UsersList'
 import BlogsUser from './routes/BlogsUser'
-
+import BlogView from './routes/BlogView'
 
 function App() {
   const { setUser, user, setUserDDBB } = useContext(ContextGlobal)
@@ -21,6 +21,8 @@ function App() {
   const queryClient = useQueryClient()
 
   const match = useMatch('/users/:id')
+
+  const blogMatch = useMatch('/blogs/:id')
 
 
   const sortByLikes = () => {
@@ -79,6 +81,13 @@ function App() {
 
   console.log(uBlogs)
 
+  console.log(blogMatch?.params.id)
+
+  const blogView = blogMatch ? blogsQuery.find(b => b.id === blogMatch?.params.id)
+  : null
+
+  console.log(blogView)
+
 
   console.log(JSON.parse(JSON.stringify(result)))
 
@@ -90,10 +99,15 @@ function App() {
         <Notification/>
         {user === null ? <LoginForm/> : <HeaderUserInfo/>}
         <Routes>
+          <Route path='/blogs/:id' element={user !== null   
+          ?<BlogView blogView={blogView}/>
+          :""
+        }/>
           <Route path='/users/:id' element={<BlogsUser uBlogs={uBlogs}/>}/>
           <Route path='/users' element={<UsersList/>}/>
           <Route path='/' element={(user && <AddBlogForm/>) ? 
           <>
+          <AddBlogForm/>
           <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>
 
           <ul className='list-group' id='initialList'>
