@@ -3,7 +3,7 @@ import { useState } from 'react'
 import BlogDetail  from './BlogDetails'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateLikes } from '../requests'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 const Blog = ({ blog }) => {
@@ -11,7 +11,6 @@ const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -33,11 +32,6 @@ const Blog = ({ blog }) => {
     }
   })
 
-
-  const handleView = (id) => {
-    navigate(`/blogs/${id}`)
-  }
-
   const handleLikes = () => {
     setLike((prevLike) => prevLike + 1)
     const blogUpdated = {
@@ -50,7 +44,9 @@ const Blog = ({ blog }) => {
   return (
     <li id="colorList" className='list-group-item list-group-item-light blog'>
       <div className="containerInfoBlog">
-        <h5 onClick={() => handleView(blog.id)} className='individualBlog'>{blog.title} - {blog.author}</h5>
+        <h5 className='individualBlog'>
+          <Link className='linkColor' to={`/blogs/${blog.id}`}>{blog.title} - {blog.author}</Link>  
+        </h5>
         <button id="btn-details" className="btn btn-outline-primary" onClick={toggleVisibility}>{visible ? 'Hide details':'View details'}</button>
       </div>
       <BlogDetail key={blog.id} style={showWhenVisible} blog={blog} handleLikes={handleLikes}/>

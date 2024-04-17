@@ -92,6 +92,14 @@ h1 {
   cursor: pointer;
 }
 
+.individualBlog>Link{
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.linkColor{
+  color: rgba(255, 255, 255, 0.87);
+}
+
 .individualBlog:hover{
   color: #747bff;
 }
@@ -117,6 +125,17 @@ h1 {
   color: #747bff;
 }
 
+.containerViewBlog{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.containerBtnsView{
+  display: flex;
+  gap: 2rem;
+}
+
 .containerInfoBlog{
   display: flex;
   align-items: center;
@@ -133,6 +152,8 @@ h1 {
   padding: 0.1rem;
   margin-bottom: .2rem;
 }
+
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
