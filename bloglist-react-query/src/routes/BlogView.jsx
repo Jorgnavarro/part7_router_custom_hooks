@@ -8,6 +8,7 @@ import { ContextGlobal } from "../context/globalContext"
 
 const BlogView = ({ blogView }) => {
     const [like, setLike] = useState(blogView?.likes)
+    const [comment, setComment] = useState('')
     const queryClient = useQueryClient()
     const navigate = useNavigate()
     const { userDDBB } = useContext(ContextGlobal)
@@ -82,6 +83,31 @@ const BlogView = ({ blogView }) => {
                 <button className="btn btn-outline-light" onClick={returnHome}>Go back</button>
                 {blogView?.user?.id === userDDBB || blogView?.user === userDDBB ? <button className="btn btn-outline-danger" onClick={() => handleDeleteBlog(blogView?.id)}>Remove</button> : ""}
             </div>
+            <h3>Comments</h3>
+            <form>
+                <div className="mb-3 row align-items-center infoBlog">
+                    <div className="col-8">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="comment"
+                        value={comment}
+                        onChange={({ target }) => setComment(target.value)}
+                      />
+                    </div>
+                    <div className="align-self-center col-3">
+                    <button className="btn btn-outline-success" type='submit'>Add comment</button>
+                </div>
+                </div>
+            </form>
+            {blogView?.comments === null || blogView?.comments.length === 0 ? '' : 
+            <>
+            {blogView?.comments.map(comment => {
+                return <li key={comment?._id}>
+                    {comment?.comment}
+                </li>
+            })}
+            </> }
         </div>
     )
 }
