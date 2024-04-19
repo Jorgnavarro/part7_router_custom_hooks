@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotify } from '../context/notificationContext'
 
 
+
 export function AddBlogForm () {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -18,9 +19,13 @@ export function AddBlogForm () {
     onSuccess: (newBlog) => {
       // queryClient.invalidateQueries({ queryKey: ['blogs']})
       //better performance =>
-      const blogs = queryClient.getQueryData(['blogs'])
-      queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+      if(newBlog?.response?.status !== 401){
+        const blogs = queryClient.getQueryData(['blogs'])
+        queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+        notifyWith(`${newBlog.title}, added ✅`)
+      }
     }
+    
   })
 
 
@@ -37,7 +42,6 @@ export function AddBlogForm () {
       setTitle('')
       setAuthor('')
       setUrl('')
-      notifyWith(`${title}, added ✅`)
     }else{
       notifyWith('Some of the fields are invalid')
     }
