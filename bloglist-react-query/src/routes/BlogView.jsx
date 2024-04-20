@@ -84,7 +84,7 @@ const BlogView = ({ blogView }) => {
                 {blogView?.user?.id === userDDBB || blogView?.user === userDDBB ? <button className="btn btn-outline-danger" onClick={() => handleDeleteBlog(blogView?.id)}>Remove</button> : ""}
             </div>
             <h3>Comments</h3>
-            <form>
+            <form className='containerComments'>
                 <div className="mb-3 row align-items-center infoBlog">
                     <div className="col-8">
                       <input
