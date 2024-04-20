@@ -71,6 +71,13 @@ const BlogView = ({ blogView }) => {
     }
     console.log(blogView)
     //agregamos los signos de interrogación para cuando se elimine el blog no arroje ningún error por consola al estar undefined.
+
+    const handleComments = (e) => {
+        e.preventDefault()
+        console.log(comment)
+        console.log(blogView.id)
+    }
+
     return(
         <div className="containerViewBlog">
             <h2>{blogView?.title}</h2>
@@ -84,7 +91,7 @@ const BlogView = ({ blogView }) => {
                 {blogView?.user?.id === userDDBB || blogView?.user === userDDBB ? <button className="btn btn-outline-danger" onClick={() => handleDeleteBlog(blogView?.id)}>Remove</button> : ""}
             </div>
             <h3>Comments</h3>
-            <form className='containerComments'>
+            <form className='containerComments' onSubmit={handleComments}>
                 <div className="mb-3 row align-items-center infoBlog">
                     <div className="col-8">
                       <input
@@ -96,7 +103,7 @@ const BlogView = ({ blogView }) => {
                       />
                     </div>
                     <div className="align-self-center col-3">
-                    <button className="btn btn-outline-success" type='submit'>Add comment</button>
+                    <button className="btn btn-outline-light" type='submit'>Add comment</button>
                 </div>
                 </div>
             </form>
