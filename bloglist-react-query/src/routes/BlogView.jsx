@@ -2,7 +2,7 @@
 import Swal from 'sweetalert2'
 import { useState, useContext } from "react"
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateLikes, deletedABlog } from "../requests"
+import { updateLikes, deletedABlog, addComments } from "../requests"
 import { useNavigate } from "react-router-dom"
 import { ContextGlobal } from "../context/globalContext"
 
@@ -41,6 +41,21 @@ const BlogView = ({ blogView }) => {
         }
     })
 
+    const addCommentMutation = useMutation({
+        mutationFn: addComments,
+        onSuccess: (response) => {
+            if(response?.response?.status !== 401){
+                console.log(response)
+                const blogs = queryClient.getQueryData(['blogs'])
+                const updatedList = blogs.map(blog => {
+                    return blog.id === response.id ? response : blog
+                })
+                console.log(updatedList)
+                queryClient.setQueryData(['blogs'], updatedList)
+            }
+        }
+    })
+
     const handleDeleteBlog = (id) => {
         Swal.fire({
             title: `Are you sure to delete ${blogView.title} from your blogs?`,
@@ -76,6 +91,9 @@ const BlogView = ({ blogView }) => {
         e.preventDefault()
         console.log(comment)
         console.log(blogView.id)
+        const idBlog = blogView.id
+        addCommentMutation.mutate({comment, idBlog})
+        setComment('')
     }
 
     return(

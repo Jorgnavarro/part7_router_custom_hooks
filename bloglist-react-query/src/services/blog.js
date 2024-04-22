@@ -27,8 +27,10 @@ const create = async newObject => {
   return response.data
 }
 
-const addNewComment = async (comment, id) => {
-  const response = await axios.post(`${baseUrl}/${id}/comments`, comment)
+const addNewComment = async (newComment) => {
+  const {comment, idBlog} = newComment
+
+  const response = await axios.post(`${baseUrl}/${idBlog}/comments`, {comment})
 
   return response.data
 }

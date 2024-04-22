@@ -16,6 +16,16 @@ export const createBlog = newBlog => blogService.create(newBlog).then(response =
        return error
        }
 ) 
+export const addComments = (newComment) => blogService.addNewComment(newComment).then(response => response ).catch(error => {
+       console.log(newComment)
+       Swal.fire({
+              icon: 'error',
+              title: `${error.message} - Please log in again`,
+              showConfirmButton: false,
+              timer: 2000,
+       })
+       return error
+})
 
 export const updateLikes = (blog) => blogService.update(blog).then(response =>{ 
       Swal.fire({
