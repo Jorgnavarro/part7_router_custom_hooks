@@ -18,8 +18,8 @@ export function HeaderUserInfo() {
   return(
     <div className='headerUser'>
       <div className='navBar p-2'>
-        <Link to="/">Blogs</Link>
-        <Link to="/users">Users</Link>
+        <Link className='linkNav' to="/">Blogs</Link>
+        <Link className='linkNav' to="/users">Users</Link>
       </div>
       <p className='mt-3'>{user.name} logged-in</p>
       <button className='btn btn-outline-light' onClick={handleLogout}>Logout</button>

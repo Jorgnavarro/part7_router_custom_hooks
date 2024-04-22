@@ -37,7 +37,6 @@ body {
 }
 
 .containerBlogs{
-  border: 1px red solid;
   width: 100vw;
 }
 
@@ -86,6 +85,12 @@ h1 {
 .navBar{
   display: flex;
   gap: 1rem;
+  transition: all;
+}
+
+.linkNav:hover{
+  color: silver;
+  font-size: 1.2rem;
 }
 
 #addBlogForm{
@@ -165,8 +170,14 @@ h1 {
 }
 
 .containerComments{
-  border: red 1px solid;
   width: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#containerElementsForm{
+  width: 100%;
 }
 
 

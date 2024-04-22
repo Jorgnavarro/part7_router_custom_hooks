@@ -110,7 +110,7 @@ const BlogView = ({ blogView }) => {
             </div>
             <h3>Comments</h3>
             <form className='containerComments' onSubmit={handleComments}>
-                <div className="mb-3 row align-items-center infoBlog">
+                <div id='containerElementsForm' className="row align-items-center infoBlog">
                     <div className="col-8">
                       <input
                         type="text"
@@ -121,8 +121,8 @@ const BlogView = ({ blogView }) => {
                       />
                     </div>
                     <div className="align-self-center col-3">
-                    <button className="btn btn-outline-light" type='submit'>Add comment</button>
-                </div>
+                        <button className="btn btn-outline-light" type='submit'>Add comment</button>
+                    </div>
                 </div>
             </form>
             {blogView?.comments === null || blogView?.comments.length === 0 ? '' : 
