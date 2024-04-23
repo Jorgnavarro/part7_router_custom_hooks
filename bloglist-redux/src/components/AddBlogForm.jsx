@@ -26,7 +26,6 @@ export function AddBlogForm () {
       setTitle('')
       setAuthor('')
       setUrl('')
-      dispatch(setNotification(`The blog ${title} was added ✅`, 2))
     }else{
       dispatch(setNotification('Some of the fields are invalid', 2))
     }

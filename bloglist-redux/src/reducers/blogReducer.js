@@ -33,12 +33,23 @@ export const sortByLikesR = (arrSort) => {
 
 export const createBlog = (blog) => {
   return async dispatch => {
-    const newObject = {
-      ...blog,
-      likes: 0
+    try {
+      const newObject = {
+        ...blog,
+        likes: 0
+      }
+      const newBlog = await blogService.create(newObject)
+      console.log(newBlog)
+      dispatch(appendBlog(newBlog))
+      dispatch(setNotification(`The blog ${newBlog.title} was added ✅`, 2))
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: `Please log in again - ${error.message}`,
+        showConfirmButton: false,
+        timer: 2000,
+      })
     }
-    const newBlog = await blogService.create(newObject)
-    dispatch(appendBlog(newBlog))
   }
 }
 
