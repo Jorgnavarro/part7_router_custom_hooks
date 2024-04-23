@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import { LoginForm } from './components/LoginForm'
@@ -7,51 +7,43 @@ import { AddBlogForm } from './components/AddBlogForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, sortByLikesR } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/userReducer'
+import { initialOrder } from './reducers/originalOrderblogsReducer'
+
 
 
 
 
 function App() {
+  const [originalOrder, setOriginalOrder] = useState(true)
   const dispatch = useDispatch()
-  const userData = useSelector(state => state.userData)
+  // const userData = useSelector(state => state.userData)
   const userLog = useSelector(state => state.userLogin)
   const blogList = useSelector(state => state.blogs)
-  console.log(blogList)
-  console.log(userData)
-  console.log(userLog)
+  const originalOrderBlogs = useSelector(state => state.originalOrder)
+
+
 
   dispatch(getLoggedUser())
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initialOrder())
   }, [dispatch])
 
-  // useEffect(() => {
-  //   async function getLocalUser (){
-  //     const loggedUserJSON = window.localStorage.getItem('loggedUserBlogs')
-  //     const userToSearch = JSON.parse(loggedUserJSON)
-  //     if(userToSearch){
-  //       const response = await userService.getUser(userToSearch.username)
-  //       dispatch(getLoggedUser(response[0]?.id))
-  //       blogService.setToken(userToSearch.token)
-  //       window.localStorage.setItem('userLog', JSON.stringify(response[0]?.id))
-  //     }
-
-  //   }
-  //   getLocalUser()
-  // }, [dispatch])
 
 
 
   const sortByLikes = () => {
+    setOriginalOrder(!originalOrder)
     const arrSort = [...blogList]
     arrSort.sort((a,b) => {
       return b.likes - a.likes
     })
     dispatch(sortByLikesR(arrSort))
+    if(blogList[0].title === arrSort[0].title){
+      dispatch(sortByLikesR(originalOrderBlogs))
+    }
   }
-
-
 
 
 
@@ -61,7 +53,7 @@ function App() {
       <Notification/>
       {userLog === null ? <LoginForm/> : <HeaderUserInfo/> }
       {userLog && <AddBlogForm/>}
-      {userLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">Sort by likes</button>}
+      {userLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">{originalOrder? 'Sort by likes' : 'Default order'}</button>}
       {userLog && <ul className='list-group' id='initialList'>
         {blogList.map(blog => {
           return <Blog key={blog.id} blog={blog} />
