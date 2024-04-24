@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, sortByLikesR } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/userReducer'
 import { initialOrder } from './reducers/originalOrderblogsReducer'
-
+import { Routes, Route } from 'react-router-dom'
+import UsersList from './routes/UsersList'
 
 
 
@@ -52,13 +53,23 @@ function App() {
       <h1 className='text-center mt-3 mb-5'>Blogs 🗒️</h1>
       <Notification/>
       {userLog === null ? <LoginForm/> : <HeaderUserInfo/> }
-      {userLog && <AddBlogForm/>}
-      {userLog && <button onClick={sortByLikes} className="btn btn-outline-success mb-2">{originalOrder? 'Sort by likes' : 'Default order'}</button>}
-      {userLog && <ul className='list-group' id='initialList'>
-        {blogList.map(blog => {
-          return <Blog key={blog.id} blog={blog} />
-        })}
-      </ul>}
+      <Routes>
+        <Route path='/users' element={<UsersList/>}/>
+        <Route path='/' element={(userLog && <AddBlogForm/>) ?
+          <>
+            <AddBlogForm/>
+
+            <button onClick={sortByLikes} className="btn btn-outline-success mb-2">{originalOrder? 'Sort by likes' : 'Default order'}</button>
+
+            <ul className='list-group' id='initialList'>
+              {blogList.map(blog => {
+                return <Blog key={blog.id} blog={blog} />
+              })}
+            </ul>
+          </>
+          : ''
+        }/>
+      </Routes>
       <Notification className='mt-5'/>
     </div>
   )
