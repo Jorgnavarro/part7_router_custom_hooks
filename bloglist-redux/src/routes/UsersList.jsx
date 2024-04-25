@@ -1,16 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserList } from '../reducers/usersReducer'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 
 function UsersList (){
   const userList = useSelector(state => state.users)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     dispatch(getUserList())
   }, [dispatch])
+
+  const handleBlogsUser = (id) => {
+    navigate(`/users/${id}`)
+  }
 
   return(
     <div className="mt-5 containerTable">
@@ -25,7 +31,7 @@ function UsersList (){
         <tbody className="table-group-divider">
           {userList.map(user => {
             return <tr key={user.id}>
-              <th className="authorBlog" scope="row">{user.name}</th>
+              <th className="authorBlog" scope="row" onClick={() => handleBlogsUser(user.id)}>{user.name}</th>
               <td className="text-center">{user.blogs.length}</td>
             </tr>
           })}

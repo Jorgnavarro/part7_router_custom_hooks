@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs, sortByLikesR } from './reducers/blogReducer'
 import { getLoggedUser } from './reducers/userReducer'
 import { initialOrder } from './reducers/originalOrderblogsReducer'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useMatch } from 'react-router-dom'
 import UsersList from './routes/UsersList'
+import BlogsUser from './routes/BlogsUser'
 
 
 
@@ -21,6 +22,11 @@ function App() {
   const userLog = useSelector(state => state.userLogin)
   const blogList = useSelector(state => state.blogs)
   const originalOrderBlogs = useSelector(state => state.originalOrder)
+
+  const match = useMatch('/users/:id')
+
+  const uBlogs = match ? blogList.filter(b => b.user?.id === match.params.id)
+    : null
 
 
 
@@ -54,6 +60,7 @@ function App() {
       <Notification/>
       {userLog === null ? <LoginForm/> : <HeaderUserInfo/> }
       <Routes>
+        <Route path='/users/:id' element={<BlogsUser uBlogs={uBlogs} />}/>
         <Route path='/users' element={<UsersList/>}/>
         <Route path='/' element={(userLog && <AddBlogForm/>) ?
           <>
