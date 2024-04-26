@@ -1,8 +1,10 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 
-
-const BlogView = () => {
+const BlogView = ({ blogView }) => {
+  const [like, setLike] = useState(blogView?.likes)
 
   return(
     <div className="containerViewBlog">
