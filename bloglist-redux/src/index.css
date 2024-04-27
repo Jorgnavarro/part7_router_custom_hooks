@@ -77,6 +77,19 @@ h1 {
   align-items: center;
   gap: 0.4rem;
 }
+
+.navBar{
+  display: flex;
+  gap: 1rem;
+  transition: all;
+}
+
+.linkNav:hover{
+  color: silver;
+  font-size: 1.2rem;
+}
+
+
 .containerTable{
   width: 100%;
   display: flex;
