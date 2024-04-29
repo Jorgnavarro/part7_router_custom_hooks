@@ -33,6 +33,7 @@ function App() {
   const blogView = blogMatch ? blogList.find(b => b.id === blogMatch.params.id)
     : null
 
+  console.log(blogList)
 
 
   dispatch(getLoggedUser())

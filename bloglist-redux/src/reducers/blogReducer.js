@@ -74,8 +74,21 @@ export const voteABlogService = ( id ) => {
 
       dispatch(setBlogs(updatedList))
 
+      Swal.fire({
+        icon: 'success',
+        title: `You liked - ${blogToUpdate.title}`,
+        showConfirmButton: false,
+        timer: 2000,
+      })
+
     }catch(e){
       dispatch(setNotification(`Please login again - ${e.message}`, 4))
+      Swal.fire({
+        icon: 'error',
+        title: `Please log in again - ${e.message}`,
+        showConfirmButton: false,
+        timer: 2000,
+      })
     }
 
   }

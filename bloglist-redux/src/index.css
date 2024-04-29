@@ -115,6 +115,10 @@ h1 {
   gap: 1rem;
   width: 100%;
 }
+.containerBtnsView{
+  display: flex;
+  gap: 2rem;
+}
 
 #addBlogForm{
   margin-top: 1rem;
