@@ -5,6 +5,8 @@ import loginReducer from './reducers/loginReducer'
 import userReducer from './reducers/userReducer'
 import originalOrderblogsReducer from './reducers/originalOrderblogsReducer'
 import usersReducer from './reducers/usersReducer'
+import answerReducer from './reducers/answerReducer'
+
 const store = configureStore({
   reducer: {
     blogs: blogReducer,
@@ -12,7 +14,8 @@ const store = configureStore({
     userLogin: loginReducer,
     userData: userReducer,
     originalOrder: originalOrderblogsReducer,
-    users: usersReducer
+    users: usersReducer,
+    answer: answerReducer
   },
 })
 

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import blogService  from '../services/blog'
 import { setNotification } from './notificationReducer'
 import Swal from 'sweetalert2'
+import { setAnswerServer } from './answerReducer'
 
 const blogSlice = createSlice({
   name: 'blogs',
@@ -73,6 +74,7 @@ export const voteABlogService = ( id ) => {
       console.log(updatedList)
 
       dispatch(setBlogs(updatedList))
+      dispatch(setAnswerServer('Success'))
 
       Swal.fire({
         icon: 'success',
@@ -83,6 +85,8 @@ export const voteABlogService = ( id ) => {
 
     }catch(e){
       dispatch(setNotification(`Please login again - ${e.message}`, 4))
+
+      dispatch(setAnswerServer(`Please login again - ${e.message}`))
       Swal.fire({
         icon: 'error',
         title: `Please log in again - ${e.message}`,
@@ -110,9 +114,11 @@ export const deleteABlogService = (id) => {
         showConfirmButton: false,
         timer: 2000,
       })
+      dispatch(setAnswerServer('Success'))
 
     } catch(e){
       dispatch(setNotification(`Please login again - ${e.message}`))
+      dispatch(setAnswerServer(`Please login again - ${e.message}`))
       Swal.fire({
         icon: 'error',
         title: 'The blog cannot be deleted, please log in again',
