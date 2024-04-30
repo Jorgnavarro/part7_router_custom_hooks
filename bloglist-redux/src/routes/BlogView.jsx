@@ -49,6 +49,12 @@ const BlogView = ({ blogView }) => {
           dispatch(deleteABlogService(id))
           navigate('/')
         }
+        Swal.fire({
+          icon: 'error',
+          title: `Please log in again - ${blogView.title} - cannot be deleted`,
+          showConfirmButton: false,
+          timer: 2000,
+        })
       }
     })
   }
