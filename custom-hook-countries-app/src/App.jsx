@@ -30,7 +30,8 @@ function App() {
     return country;
   });
 
-  //
+  //Se llama al hook que recibe por parámetro el país que se digita en el input
+  //Posterior a esto, el hook hará la busqueda y retornará los detalles del país que coincida
   const countryDetail = useCountry(countryInput)
   
   
